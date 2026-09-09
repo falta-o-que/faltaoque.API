@@ -20,8 +20,3 @@ spring:
             locations:
               - classpath:db/migration/schema
               - classpath:db/migration/mocks
-          output:
-            ansi:
-              enabled: always
-        server:
-          port: 8080
