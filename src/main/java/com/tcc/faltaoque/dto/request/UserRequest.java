@@ -4,7 +4,7 @@ public record UserRequest(
         String name,
         String email,
         String password,
-        Byte avatar,
-        Byte role
+        Byte avatar
+
 ) {
 }

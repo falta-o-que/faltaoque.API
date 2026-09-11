@@ -8,7 +8,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class UserMapper {
 
-
     public static User toRequest(UserRequest request) {
         return User
                 .builder()
@@ -16,7 +15,6 @@ public class UserMapper {
                 .email(request.email())
                 .password(request.password())
                 .avatar(request.avatar())
-                .role(request.role())
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package com.tcc.faltaoque.entity;
 
+import com.tcc.faltaoque.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +36,7 @@ public class User {
 
     @Column(nullable = false)
     @Builder.Default
-    private Byte role = 1;
+    private Role role = Role.ROLE_USER;
 
     @ManyToMany
     @JoinTable(
