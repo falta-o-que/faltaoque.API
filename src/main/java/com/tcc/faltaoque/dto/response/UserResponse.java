@@ -1,5 +1,6 @@
 package com.tcc.faltaoque.dto.response;
 
+import com.tcc.faltaoque.enums.Avatar;
 import com.tcc.faltaoque.enums.Role;
 import lombok.Builder;
 
@@ -8,7 +9,7 @@ public record UserResponse(
         String id,
         String name,
         String email,
-        Byte avatar,
+        Avatar avatar,
         Role role
 ) {
 }
