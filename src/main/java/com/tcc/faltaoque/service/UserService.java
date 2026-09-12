@@ -4,6 +4,7 @@ import com.tcc.faltaoque.entity.User;
 import com.tcc.faltaoque.repository.UserRepository;
 import com.tcc.faltaoque.mapper.UserMapper;
 import com.tcc.faltaoque.mapper.PantryMapper;
+import com.tcc.faltaoque.dto.request.UserRequest;
 import com.tcc.faltaoque.dto.response.UserResponse;
 import com.tcc.faltaoque.dto.response.PantryResponse;
 import com.tcc.faltaoque.exception.UserNotFoundException;
@@ -39,4 +40,11 @@ public class UserService {
 			.map(PantryMapper::toEntity)
 			.collect(Collectors.toList());
 	}
+
+	public UserResponse createUser(UserRequest userRequest) {
+		User user = UserMapper.toRequest(userRequest);
+		userRepository.save(user);
+		return UserMapper.toEntity(user);
+	}
+
 }
