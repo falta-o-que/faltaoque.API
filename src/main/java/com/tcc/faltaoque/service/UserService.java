@@ -3,6 +3,7 @@ package com.tcc.faltaoque.service;
 import com.tcc.faltaoque.repository.UserRepository;
 import com.tcc.faltaoque.mapper.UserMapper;
 import com.tcc.faltaoque.dto.response.UserResponse;
+import com.tcc.faltaoque.exception.UserNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,11 @@ public class UserService {
 			.stream()
 			.map(UserMapper::toEntity)
 			.collect(Collectors.toList());
+	}
+
+	public UserResponse findUserById(String id) {
+		return UserMapper.toEntity(userRepository.findById(id)
+			.orElseThrow(() -> new UserNotFoundException(id)));
 	}
 
 }
