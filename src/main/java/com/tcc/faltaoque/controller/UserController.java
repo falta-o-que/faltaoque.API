@@ -2,6 +2,7 @@ package com.tcc.faltaoque.controller;
 
 import com.tcc.faltaoque.service.UserService;
 import com.tcc.faltaoque.dto.response.UserResponse;
+import com.tcc.faltaoque.dto.response.PantryResponse;
 import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,15 @@ public class UserController {
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(userService.findUserById(id));
+	}
+
+	@Operation(summary = "Listar todas as despensas de um único usuário")
+	@GetMapping("{id}/pantries")
+	public ResponseEntity<List<PantryResponse>> listAllPantriesByUser(
+	@PathVariable String id) {
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(userService.listAllPantriesByUser(id));
 	}
 
 }
