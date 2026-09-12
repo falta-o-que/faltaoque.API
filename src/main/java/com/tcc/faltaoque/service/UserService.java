@@ -47,4 +47,16 @@ public class UserService {
 		return UserMapper.toEntity(user);
 	}
 
+	public UserResponse updateUser(String id, UserRequest userRequest) {
+		User user = userRepository.findById(id)
+			.orElseThrow(() -> new UserNotFoundException(id));
+
+		user.setName(userRequest.name());
+		user.setEmail(userRequest.email());
+		user.setPassword(userRequest.password());
+		user.setAvatar(userRequest.avatar());
+
+		userRepository.save(user);
+		return UserMapper.toEntity(user);
+	}
 }
