@@ -59,4 +59,12 @@ public class UserService {
 		userRepository.save(user);
 		return UserMapper.toEntity(user);
 	}
+
+	public void deleteUser(String id) {
+		User user = userRepository.findById(id)
+			.orElseThrow(() -> new UserNotFoundException(id));
+
+		userRepository.deleteById(id);
+	}
+
 }
