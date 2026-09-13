@@ -1,5 +1,6 @@
 package com.tcc.faltaoque.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Jwts;
@@ -19,12 +20,20 @@ public class TokenService {
 		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
 	}
 
+	Date getExpiration() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.HOUR, 2);
+
+		return calendar.getTime();
+	}
+
 	public String generateToken(String email) {
 		return Jwts
 			.builder()
 			.subject(email)
 			.issuer("faltaoque.API")
 			.issuedAt(new Date())
+			.expiration(getExpiration())
 			.signWith(getKey(), Jwts.SIG.HS256)
 			.compact();
 	}
