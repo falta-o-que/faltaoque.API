@@ -2,7 +2,9 @@ package com.tcc.faltaoque.controller;
 
 import com.tcc.faltaoque.service.AuthService;
 import com.tcc.faltaoque.dto.request.UserRequest;
+import com.tcc.faltaoque.dto.request.UserLoginRequest;
 import com.tcc.faltaoque.dto.response.UserResponse;
+import com.tcc.faltaoque.dto.response.TokenResponse;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,4 +31,12 @@ public class AuthController {
 			.body(authService.createUser(userRequest));
 	}
 
+	@Operation(summary = "Realizar login")
+	@PostMapping("/login")
+	public ResponseEntity<TokenResponse> login(
+	@RequestBody @Valid UserLoginRequest userLoginRequest) {
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(authService.login(userLoginRequest));
+	}
 }
