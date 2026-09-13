@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.Claims;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -36,6 +37,15 @@ public class TokenService {
 			.parseSignedClaims(token)
 			.getPayload()
 			.getSubject();
+	}
+
+	public Claims getTokenClaims(String token) {
+		return Jwts
+			.parser()
+			.verifyWith(getKey())
+			.build()
+			.parseSignedClaims(token)
+			.getPayload();
 	}
 
 }
