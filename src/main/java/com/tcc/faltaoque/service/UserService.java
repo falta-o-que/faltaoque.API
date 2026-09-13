@@ -41,12 +41,6 @@ public class UserService {
 			.collect(Collectors.toList());
 	}
 
-	public UserResponse createUser(UserRequest userRequest) {
-		User user = UserMapper.toRequest(userRequest);
-		userRepository.save(user);
-		return UserMapper.toEntity(user);
-	}
-
 	public UserResponse updateUser(String id, UserRequest userRequest) {
 		User user = userRepository.findById(id)
 			.orElseThrow(() -> new UserNotFoundException(id));

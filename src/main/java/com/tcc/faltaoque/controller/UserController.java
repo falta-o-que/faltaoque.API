@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,15 +48,6 @@ public class UserController {
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(userService.listAllPantriesByUser(id));
-	}
-
-	@Operation(summary = "Criar um novo usuário")
-	@PostMapping
-	public ResponseEntity<UserResponse> createUser(
-	@RequestBody @Valid UserRequest userRequest) {
-		return ResponseEntity
-			.status(HttpStatus.CREATED)
-			.body(userService.createUser(userRequest));
 	}
 
 	@Operation(summary = "Atualizar as informações de um usuário")
