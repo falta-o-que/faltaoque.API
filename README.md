@@ -1,6 +1,6 @@
 # FaltaOquê? - API
 
-## Árvore do projeto
+## Estrutura do Projeto
 
 ```
 src/
