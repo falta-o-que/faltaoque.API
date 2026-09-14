@@ -1,6 +1,6 @@
 # FaltaOquê? - API
 
-## Estrutura do Projeto
+## :open_file_folder: Estrutura do Projeto
 
 ```
 src/
