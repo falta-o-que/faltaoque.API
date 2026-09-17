@@ -10,6 +10,7 @@ src/
 │   │       └── tcc/
 │   │           └── faltaoque/
 │   │               ├── config/
+│   │               │   └── security/
 │   │               ├── controller/
 │   │               ├── dto/
 │   │               │   ├── request/
@@ -24,6 +25,8 @@ src/
 │   └── resources/
 │       ├── db/
 │       │   └── migration/
+│       │       ├── mocks/
+│       │       └── schema/
 │       ├── static/
 │       ├── templates/
 │       └── application.yaml

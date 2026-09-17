@@ -20,3 +20,5 @@ spring:
             locations:
               - classpath:db/migration/schema
               - classpath:db/migration/mocks
+security:
+  token_secret_key: ${TOKEN_SECRET_KEY}
