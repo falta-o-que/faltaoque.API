@@ -1,3 +1,13 @@
+-- COLORS
+CREATE TABLE colors
+(
+    id       INT         NOT NULL AUTO_INCREMENT,
+    name     VARCHAR(50) NOT NULL,
+    hex_code VARCHAR(7)  NOT NULL,
+
+    PRIMARY KEY (id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- USERS
 CREATE TABLE users
 (
@@ -5,11 +15,15 @@ CREATE TABLE users
     name      VARCHAR(50)  NOT NULL,
     email     VARCHAR(254) NOT NULL UNIQUE,
     password  VARCHAR(64)  NOT NULL,
-    avatar    TINYINT      NOT NULL,
+    avatar_id INT          NOT NULL,
     role      TINYINT      NOT NULL DEFAULT 0,
     is_active BOOLEAN      NOT NULL DEFAULT 1,
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+
+    CONSTRAINT fk_user_avatar_color
+        FOREIGN KEY (avatar_id)
+            REFERENCES colors (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- PANTRIES INVITES
@@ -29,9 +43,13 @@ CREATE TABLE pantries
     id              VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     title           VARCHAR(150) NOT NULL,
     location        VARCHAR(8),
-    color           TINYINT      NOT NULL,
+    color_id        INT          NOT NULL,
     share_invite_id VARCHAR(36),
     PRIMARY KEY (id),
+
+    CONSTRAINT fk_pantry_color
+        FOREIGN KEY (color_id)
+            REFERENCES colors (id),
 
     CONSTRAINT fk_pantries_invite
         FOREIGN KEY (share_invite_id)
@@ -88,7 +106,7 @@ CREATE TABLE pantry_products
     name            VARCHAR(100) NOT NULL,
     quantity        INT          NOT NULL DEFAULT 1,
     is_in_pantry    BOOLEAN      NOT NULL DEFAULT TRUE,
-    weight          DOUBLE,
+    weight DOUBLE,
     price           DECIMAL(10, 2),
     brand           VARCHAR(100),
     expiration_date DATE,
