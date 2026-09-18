@@ -28,8 +28,9 @@ public class Pantry {
     @Column(length = 8)
     private String location;
 
-    @Column(nullable = false)
-    private Byte color;
+    @ManyToOne
+    @JoinColumn(name="color_id", nullable = false)
+    private Color colorId;
 
     @OneToOne
     @JoinColumn(name = "share_invite_id")

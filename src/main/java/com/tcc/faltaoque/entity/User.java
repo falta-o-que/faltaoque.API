@@ -1,6 +1,5 @@
 package com.tcc.faltaoque.entity;
 
-import com.tcc.faltaoque.enums.Avatar;
 import com.tcc.faltaoque.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,12 +31,17 @@ public class User {
     @Column(length = 64, nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private Avatar avatar;
+    @ManyToOne
+    @JoinColumn(name = "avatar_id", nullable = false)
+    private Color avatarId;
 
     @Column(nullable = false)
     @Builder.Default
     private Role role = Role.ROLE_USER;
+
+    @Column(name="is_active")
+    @Builder.Default
+    private Boolean isActive = true;
 
     @ManyToMany
     @JoinTable(

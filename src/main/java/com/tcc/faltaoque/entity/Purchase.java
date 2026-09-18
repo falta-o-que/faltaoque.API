@@ -22,6 +22,9 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(length = 100, nullable = false)
+    private String title;
+
     @Column(length = 8)
     private String location;
 
@@ -33,11 +36,11 @@ public class Purchase {
     private BigDecimal totalPrice;
 
     @Column(name = "total_products", nullable = false)
-    private Integer totalProducts;
+    private int totalProducts;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @Column(name = "finish_products", nullable = false)
-    private LocalDate finishProducts;
+    @Column(name = "missing_products", nullable = false)
+    private LocalDate missingProducts;
 
     @ManyToOne
     @JoinColumn(name = "pantry_id", nullable = false)
