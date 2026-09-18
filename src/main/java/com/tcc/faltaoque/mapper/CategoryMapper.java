@@ -8,14 +8,14 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class CategoryMapper {
 
-    public static Category toRequest(CategoryRequest request) {
+    public static Category toEntity(CategoryRequest request) {
         return Category
                 .builder()
                 .name(request.name())
                 .build();
     }
 
-    public static CategoryResponse toEntity(Category response) {
+    public static CategoryResponse toResponse(Category response) {
         return CategoryResponse
                 .builder()
                 .id(response.getId())

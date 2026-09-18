@@ -6,7 +6,7 @@ import com.tcc.faltaoque.entity.GroceryList;
 
 public class GroceryListMapper {
 
-    public static GroceryList toRequest(GroceryListRequest request) {
+    public static GroceryList toEntity(GroceryListRequest request) {
         return GroceryList
                 .builder()
                 .name(request.name())
@@ -14,7 +14,7 @@ public class GroceryListMapper {
                 .build();
     }
 
-    public static GroceryListResponse toEntity(GroceryList entity) {
+    public static GroceryListResponse toResponse(GroceryList entity) {
         return GroceryListResponse
                 .builder()
                 .id(entity.getId())
