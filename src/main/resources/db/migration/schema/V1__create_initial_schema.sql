@@ -1,12 +1,13 @@
 -- USERS
 CREATE TABLE users
 (
-    id       VARCHAR(36)  NOT NULL,
-    name     VARCHAR(50)  NOT NULL,
-    email    VARCHAR(254) NOT NULL UNIQUE,
-    password VARCHAR(64)  NOT NULL,
-    avatar   TINYINT      NOT NULL,
-    role     TINYINT      NOT NULL DEFAULT 1,
+    id        VARCHAR(36)  NOT NULL DEFAULT (UUID()),
+    name      VARCHAR(50)  NOT NULL,
+    email     VARCHAR(254) NOT NULL UNIQUE,
+    password  VARCHAR(64)  NOT NULL,
+    avatar    TINYINT      NOT NULL,
+    role      TINYINT      NOT NULL DEFAULT 0,
+    is_active BOOLEAN      NOT NULL DEFAULT 1,
 
     PRIMARY KEY (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -14,9 +15,9 @@ CREATE TABLE users
 -- PANTRIES INVITES
 CREATE TABLE pantries_invites
 (
-    id           VARCHAR(36)  NOT NULL,
+    id           VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     share_invite VARCHAR(255) NOT NULL,
-    created_at   DATE         NOT NULL,
+    created_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expires_at   TIMESTAMP    NOT NULL,
 
     PRIMARY KEY (id)
@@ -25,7 +26,7 @@ CREATE TABLE pantries_invites
 -- PANTRIES
 CREATE TABLE pantries
 (
-    id              VARCHAR(36)  NOT NULL,
+    id              VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     title           VARCHAR(150) NOT NULL,
     location        VARCHAR(8),
     color           TINYINT      NOT NULL,
@@ -56,7 +57,7 @@ CREATE TABLE users_pantries
 -- CATEGORIES
 CREATE TABLE categories
 (
-    id   VARCHAR(36) NOT NULL,
+    id   INT         NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
 
     PRIMARY KEY (id)
@@ -65,13 +66,14 @@ CREATE TABLE categories
 -- PURCHASES
 CREATE TABLE purchases
 (
-    id              VARCHAR(36)    NOT NULL,
-    location        VARCHAR(8),
-    purchase_date   DATE           NOT NULL,
-    total_price     DECIMAL(10, 2) NOT NULL,
-    total_products  INT            NOT NULL,
-    finish_products DATE           NOT NULL,
-    pantry_id       VARCHAR(36)    NOT NULL,
+    id               VARCHAR(36)    NOT NULL DEFAULT (UUID()),
+    title            VARCHAR(100)   NOT NULL,
+    location         VARCHAR(8),
+    purchase_date    DATE           NOT NULL,
+    total_price      DECIMAL(10, 2) NOT NULL,
+    total_products   INT            NOT NULL,
+    missing_products DATE           NOT NULL,
+    pantry_id        VARCHAR(36)    NOT NULL,
     PRIMARY KEY (id),
 
     CONSTRAINT fk_purchases_pantry
@@ -82,17 +84,17 @@ CREATE TABLE purchases
 -- PANTRY PRODUCTS
 CREATE TABLE pantry_products
 (
-    id              VARCHAR(36)  NOT NULL,
+    id              VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     name            VARCHAR(100) NOT NULL,
-    quantity        TINYINT      NOT NULL,
-    is_in_pantry    BOOLEAN      NOT NULL,
-    weight DOUBLE,
+    quantity        INT          NOT NULL DEFAULT 1,
+    is_in_pantry    BOOLEAN      NOT NULL DEFAULT TRUE,
+    weight          DOUBLE,
     price           DECIMAL(10, 2),
     brand           VARCHAR(100),
     expiration_date DATE,
     missing_date    DATE,
     purchase_id     VARCHAR(36)  NOT NULL,
-    category_id     VARCHAR(36)  NOT NULL,
+    category_id     INT          NOT NULL,
     PRIMARY KEY (id),
 
     CONSTRAINT fk_pantry_products_purchase
@@ -107,7 +109,7 @@ CREATE TABLE pantry_products
 -- GROCERY LISTS
 CREATE TABLE grocery_lists
 (
-    id         VARCHAR(36)  NOT NULL,
+    id         VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     name       VARCHAR(100) NOT NULL,
     suggestion TINYINT      NOT NULL,
     PRIMARY KEY (id)
