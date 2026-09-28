@@ -1,150 +1,256 @@
+-- COLORS
+INSERT INTO colors (name, hex_code)
+VALUES ('GREEN_01', '#97F7CD'),
+       ('GREEN_02', '#00DD00'),
+       ('GREEN_03', '#36B83F'),
+       ('CYAN', '#00F0FF'),
+       ('BLUE_01', '#75C1E0'),
+       ('BLUE_02', '#0031F5'),
+       ('BLUE_03', '#1E2B5E'),
+       ('PURPLE', '#7115C2'),
+       ('PINK', '#B666B2'),
+       ('RED', '#FF0505'),
+       ('BROWN', '#470419'),
+       ('YELLOW', '#FFB405');
+
 -- USERS
-INSERT INTO users (id, name, email, password, avatar, role)
-VALUES ('u0000001-0000-0000-0000-000000000001', 'Ana Silva', 'ana.silva@email.com', '$2a$10$7R.xK8m...hash1', 1, 1),
-       ('u0000002-0000-0000-0000-000000000002', 'Carlos Oliveira', 'carlos.oliveira@email.com',
-        '$2a$10$7R.xK8m...hash2', 2, 1),
-       ('u0000003-0000-0000-0000-000000000003', 'Mariana Santos', 'mariana.santos@email.com', '$2a$10$7R.xK8m...hash3',
-        3, 2),
-       ('u0000004-0000-0000-0000-000000000004', 'Lucas Ferreira', 'lucas.ferreira@email.com', '$2a$10$7R.xK8m...hash4',
-        1, 1),
-       ('u0000005-0000-0000-0000-000000000005', 'Beatriz Costa', 'beatriz.costa@email.com', '$2a$10$7R.xK8m...hash5', 4,
-        1),
-       ('u0000006-0000-0000-0000-000000000006', 'Rafael Souza', 'rafael.souza@email.com', '$2a$10$7R.xK8m...hash6', 2,
-        1),
-       ('u0000007-0000-0000-0000-000000000007', 'Fernanda Lima', 'fernanda.lima@email.com', '$2a$10$7R.xK8m...hash7', 3,
-        1),
-       ('u0000008-0000-0000-0000-000000000008', 'Gabriel Alves', 'gabriel.alves@email.com', '$2a$10$7R.xK8m...hash8', 1,
-        1),
-       ('u0000009-0000-0000-0000-000000000009', 'Juliana Rocha', 'juliana.rocha@email.com', '$2a$10$7R.xK8m...hash9', 5,
-        2),
-       ('u0000010-0000-0000-0000-000000000010', 'Thiago Martins', 'thiago.martins@email.com', '$2a$10$7R.xK8m...hash10',
-        2, 1);
+INSERT INTO users (name, email, password, avatar_id, role, is_active)
+VALUES ('admin', 'admin@email.com', 'admin',
+        (SELECT id FROM colors WHERE name = 'GREEN_01'), 1, true),
+       ('Carlos Oliveira', 'carlos.oliveira@email.com', 'senha123',
+        (SELECT id FROM colors WHERE name = 'GREEN_02'), 0, true),
+       ('Mariana Santos', 'mariana.santos@email.com', 'senha123',
+        (SELECT id FROM colors WHERE name = 'GREEN_03'), 0, true),
+       ('Lucas Ferreira', 'lucas.ferreira@email.com', 'senha123',
+        (SELECT id FROM colors WHERE name = 'CYAN'), 0, true),
+       ('Beatriz Costa', 'beatriz.costa@email.com', 'senha123',
+        (SELECT id FROM colors WHERE name = 'PURPLE'), 0, false),
+       ('admin2', 'admin2@email.com', 'admin',
+        (SELECT id FROM colors WHERE name = 'PURPLE'), 1, true),
+       ('Fernanda Lima', 'fernanda.lima@email.com', 'senha123',
+        (SELECT id FROM colors WHERE name = 'RED'), 0, false),
+       ('Gabriel Alves', 'gabriel.alves@email.com', 'senha123',
+        (SELECT id FROM colors WHERE name = 'BLUE_02'), 0, true),
+       ('Juliana Rocha', 'juliana.rocha@email.com', 'senha123',
+        (SELECT id FROM colors WHERE name = 'YELLOW'), 0, false),
+       ('Thiago Martins', 'thiago.martins@email.com', 'senha123',
+        (SELECT id FROM colors WHERE name = 'GREEN_01'), 0, true);
 
 -- PANTRIES INVITES
-INSERT INTO pantries_invites (id, share_invite, created_at, expires_at)
-VALUES ('i0000001-0000-0000-0000-000000000001', 'INVITE-001', '2026-03-01', '2026-03-15 23:59:59'),
-       ('i0000002-0000-0000-0000-000000000002', 'INVITE-002', '2026-03-02', '2026-03-16 23:59:59'),
-       ('i0000003-0000-0000-0000-000000000003', 'INVITE-003', '2026-03-03', '2026-03-17 23:59:59'),
-       ('i0000004-0000-0000-0000-000000000004', 'INVITE-004', '2026-03-04', '2026-03-18 23:59:59'),
-       ('i0000005-0000-0000-0000-000000000005', 'INVITE-005', '2026-03-05', '2026-03-19 23:59:59'),
-       ('i0000006-0000-0000-0000-000000000006', 'INVITE-006', '2026-03-06', '2026-03-20 23:59:59'),
-       ('i0000007-0000-0000-0000-000000000007', 'INVITE-007', '2026-03-07', '2026-03-21 23:59:59'),
-       ('i0000008-0000-0000-0000-000000000008', 'INVITE-008', '2026-03-08', '2026-03-22 23:59:59'),
-       ('i0000009-0000-0000-0000-000000000009', 'INVITE-009', '2026-03-09', '2026-03-23 23:59:59'),
-       ('i0000010-0000-0000-0000-000000000010', 'INVITE-010', '2026-03-10', '2026-03-24 23:59:59');
+INSERT INTO pantries_invites (share_invite, created_at, expires_at)
+VALUES ('INVITE-001', '2026-03-01 15:00:00', '2026-03-08 15:00:00'),
+       ('INVITE-002', '2026-03-02 20:30:00', '2026-03-09 20:30:00'),
+       ('INVITE-003', '2026-03-03 13:00:00', '2026-03-10 13:00:00'),
+       ('INVITE-004', '2026-03-04 13:00:00', '2026-03-11 13:00:00'),
+       ('INVITE-005', '2026-03-05 23:50:00', '2026-03-12 23:50:00'),
+       ('INVITE-006', '2026-09-05 10:00:00', '2026-09-12 10:00:00'),
+       ('INVITE-007', '2026-09-06 14:30:00', '2026-09-13 14:30:00'),
+       ('INVITE-008', '2026-09-07 09:15:00', '2026-09-14 09:15:00'),
+       ('INVITE-009', '2026-09-08 16:45:00', '2026-09-15 16:45:00'),
+       ('INVITE-010', '2026-09-09 11:20:00', '2026-09-16 11:20:00');
 
 -- PANTRIES
-INSERT INTO pantries (id, title, location, color, share_invite_id)
-VALUES ('p0000001-0000-0000-0000-000000000001', 'Despensa Principal', 'Cozinha', 1,
-        'i0000001-0000-0000-0000-000000000001'),
-       ('p0000002-0000-0000-0000-000000000002', 'Casa da Praia', 'Armario', 2, 'i0000002-0000-0000-0000-000000000002'),
-       ('p0000003-0000-0000-0000-000000000003', 'Escritório', 'Copa', 3, 'i0000003-0000-0000-0000-000000000003'),
-       ('p0000004-0000-0000-0000-000000000004', 'Sítio', 'Cozinha', 1, 'i0000004-0000-0000-0000-000000000004'),
-       ('p0000005-0000-0000-0000-000000000005', 'Apartamento Lucas', 'Dispensa', 4,
-        'i0000005-0000-0000-0000-000000000005'),
-       ('p0000006-0000-0000-0000-000000000006', 'Estúdio', 'Balcão', 5, 'i0000006-0000-0000-0000-000000000006'),
-       ('p0000007-0000-0000-0000-000000000007', 'República', 'Cozinha', 2, 'i0000007-0000-0000-0000-000000000007'),
-       ('p0000008-0000-0000-0000-000000000008', 'Despensa do Bar', 'Depósito', 3,
-        'i0000008-0000-0000-0000-000000000008'),
-       ('p0000009-0000-0000-0000-000000000009', 'Casa de Campo', 'Cozinha', 1, 'i0000009-0000-0000-0000-000000000009'),
-       ('p0000010-0000-0000-0000-000000000010', 'Reserva de Emergência', 'Porão', 6,
-        'i0000010-0000-0000-0000-000000000010');
+INSERT INTO pantries (title, location, color_id, share_invite_id)
+VALUES ('Despensa Principal', '01310100',
+        (SELECT id FROM colors WHERE name = 'PINK'),
+        (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-001')),
+       ('Casa da Praia', '22041002',
+        (SELECT id FROM colors WHERE name = 'GREEN_03')
+           , (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-002')),
+       ('Escritório da Empresa Taltal', '30140071',
+        (SELECT id FROM colors WHERE name = 'PURPLE'),
+        (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-003')),
+       ('Sítio', '04538132',
+        (SELECT id FROM colors WHERE name = 'BROWN')
+           , (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-004')),
+       ('Apartamento Lucas', '80010000',
+        (SELECT id FROM colors WHERE name = 'BLUE_01'),
+        (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-005')),
+       ('Estúdio da Aninha', '60160120',
+        (SELECT id FROM colors WHERE name = 'BLUE_01'),
+        (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-006')),
+       ('República', '90010000',
+        (SELECT id FROM colors WHERE name = 'YELLOW'),
+        (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-007')),
+       ('Despensinhaaa', '70040900',
+        (SELECT id FROM colors WHERE name = 'PINK'),
+        (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-008')),
+       ('Casa de Campo', '13010000',
+        (SELECT id FROM colors WHERE name = 'GREEN_01'),
+        (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-009')),
+       ('Reserva de Emergência', '88010000',
+        (SELECT id FROM colors WHERE name = 'GREEN_02'),
+        (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-010'));
 
 -- USERS_PANTRIES
 INSERT INTO users_pantries (user_id, pantry_id)
-VALUES ('u0000001-0000-0000-0000-000000000001', 'p0000001-0000-0000-0000-000000000001'),
-       ('u0000002-0000-0000-0000-000000000002', 'p0000001-0000-0000-0000-000000000001'),
-       ('u0000003-0000-0000-0000-000000000003', 'p0000002-0000-0000-0000-000000000002'),
-       ('u0000004-0000-0000-0000-000000000004', 'p0000003-0000-0000-0000-000000000003'),
-       ('u0000005-0000-0000-0000-000000000005', 'p0000004-0000-0000-0000-000000000004'),
-       ('u0000006-0000-0000-0000-000000000006', 'p0000005-0000-0000-0000-000000000005'),
-       ('u0000007-0000-0000-0000-000000000007', 'p0000006-0000-0000-0000-000000000006'),
-       ('u0000008-0000-0000-0000-000000000008', 'p0000007-0000-0000-0000-000000000007'),
-       ('u0000009-0000-0000-0000-000000000009', 'p0000008-0000-0000-0000-000000000008'),
-       ('u0000010-0000-0000-0000-000000000010', 'p0000009-0000-0000-0000-000000000009');
+VALUES ((SELECT id FROM users WHERE email = 'admin2@email.com'),
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal')),
+
+       ((SELECT id FROM users WHERE email = 'carlos.oliveira@email.com'),
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal')),
+
+       ((SELECT id FROM users WHERE email = 'mariana.santos@email.com'),
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal')),
+
+       ((SELECT id FROM users WHERE email = 'lucas.ferreira@email.com'),
+        (SELECT id FROM pantries WHERE title = 'Escritório da empresa taltal')),
+
+       ((SELECT id FROM users WHERE email = 'beatriz.costa@email.com'),
+        (SELECT id FROM pantries WHERE title = 'Sítio')),
+
+       ((SELECT id FROM users WHERE email = 'fernanda.lima@email.com'),
+        (SELECT id FROM pantries WHERE title = 'Estúdio da aninha')),
+
+       ((SELECT id FROM users WHERE email = 'gabriel.alves@email.com'),
+        (SELECT id FROM pantries WHERE title = 'República')),
+
+       ((SELECT id FROM users WHERE email = 'juliana.rocha@email.com'),
+        (SELECT id FROM pantries WHERE title = 'Despensinhaaa')),
+
+       ((SELECT id FROM users WHERE email = 'thiago.martins@email.com'),
+        (SELECT id FROM pantries WHERE title = 'Casa de Campo'));
 
 -- CATEGORIES
-INSERT INTO categories (id, name)
-VALUES ('c0000001-0000-0000-0000-000000000001', 'Laticínios'),
-       ('c0000002-0000-0000-0000-000000000002', 'Grãos e Cereais'),
-       ('c0000003-0000-0000-0000-000000000003', 'Limpeza'),
-       ('c0000004-0000-0000-0000-000000000004', 'Bebidas'),
-       ('c0000005-0000-0000-0000-000000000005', 'Hortifruti'),
-       ('c0000006-0000-0000-0000-000000000006', 'Carnes e Aves'),
-       ('c0000007-0000-0000-0000-000000000007', 'Padaria'),
-       ('c0000008-0000-0000-0000-000000000008', 'Enlatados'),
-       ('c0000009-0000-0000-0000-000000000009', 'Doces e Snacks'),
-       ('c0000010-0000-0000-0000-000000000010', 'Higiene Pessoal');
+INSERT INTO categories (name)
+VALUES ('Laticínios'),
+       ('Grãos e Cereais'),
+       ('Limpeza'),
+       ('Bebidas'),
+       ('Hortifruti'),
+       ('Carnes e Aves'),
+       ('Padaria'),
+       ('Enlatados'),
+       ('Doces e Snacks'),
+       ('Higiene Pessoal');
 
 -- PURCHASES
-INSERT INTO purchases (id, location, purchase_date, total_price, total_products, finish_products, pantry_id)
-VALUES ('pur00001-0000-0000-0000-000000000001', 'Mercado1', '2026-03-01', 150.00, 3, '2026-03-25',
-        'p0000001-0000-0000-0000-000000000001'),
-       ('pur00002-0000-0000-0000-000000000002', 'Mercado2', '2026-03-02', 80.50, 2, '2026-03-20',
-        'p0000001-0000-0000-0000-000000000001'),
-       ('pur00003-0000-0000-0000-000000000003', 'Mercado3', '2026-03-03', 210.00, 4, '2026-04-01',
-        'p0000002-0000-0000-0000-000000000002'),
-       ('pur00004-0000-0000-0000-000000000004', 'Mercado1', '2026-03-04', 45.90, 1, '2026-03-15',
-        'p0000003-0000-0000-0000-000000000003'),
-       ('pur00005-0000-0000-0000-000000000005', 'Mercado4', '2026-03-05', 99.00, 2, '2026-03-30',
-        'p0000004-0000-0000-0000-000000000004'),
-       ('pur00006-0000-0000-0000-000000000006', 'Mercado2', '2026-03-06', 120.30, 3, '2026-03-28',
-        'p0000005-0000-0000-0000-000000000005'),
-       ('pur00007-0000-0000-0000-000000000007', 'Mercado3', '2026-03-07', 35.00, 1, '2026-03-18',
-        'p0000006-0000-0000-0000-000000000006'),
-       ('pur00008-0000-0000-0000-000000000008', 'Mercado5', '2026-03-08', 310.00, 5, '2026-04-10',
-        'p0000007-0000-0000-0000-000000000007'),
-       ('pur00009-0000-0000-0000-000000000009', 'Mercado1', '2026-03-09', 67.80, 2, '2026-03-22',
-        'p0000008-0000-0000-0000-000000000008'),
-       ('pur00010-0000-0000-0000-000000000010', 'Mercado4', '2026-03-10', 189.90, 3, '2026-04-05',
-        'p0000009-0000-0000-0000-000000000009');
+INSERT INTO purchases (title, location, purchase_date, total_price, total_products, missing_products, pantry_id)
+VALUES ('Compra do mês', '01310100', '2026-03-01', 37.20, 3, '2026-03-25',
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal')),
+       ('Reposição semanal', '01310100', '2026-03-02', 80.50, 1, '2026-03-20',
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal')),
+       ('Compras da praia', '22041002', '2026-03-03', 210.00, 2, '2026-04-01',
+        (SELECT id FROM pantries WHERE title = 'Casa da Praia')),
+       ('Produtos do escritório', '30140071', '2026-03-04', 45.90, 1, '2026-03-15',
+        (SELECT id FROM pantries WHERE title = 'Escritório da Empresa Taltal')),
+       ('Compra do apartamento', '80010000', '2026-03-05', 99.00, 1, '2026-03-30',
+        (SELECT id FROM pantries WHERE title = 'Apartamento Lucas')),
+       ('Reposição do estúdio', '60160120', '2026-03-06', 120.30, 1, '2026-03-28',
+        (SELECT id FROM pantries WHERE title = 'Estúdio da Aninha')),
+       ('Compra da república', '90010000', '2026-03-07', 35.00, 1, '2026-03-18',
+        (SELECT id FROM pantries WHERE title = 'República')),
+       ('Compra para a mini despensa', '70040900', '2026-03-08', 310.00, 0, '2026-04-10',
+        (SELECT id FROM pantries WHERE title = 'Despensinhaaa')),
+       ('Casa de Campo', '13010000', '2026-03-09', 67.80, 0, '2026-03-22',
+        (SELECT id FROM pantries WHERE title = 'Casa de Campo')),
+       ('Estoque de emergência', '88010000', '2026-03-10', 189.90, 0, '2026-04-05',
+        (SELECT id FROM pantries WHERE title = 'Casa de Campo')),
+       ('Casa de Campo', '13010000', '2026-03-07', 63.47, 3, '2026-03-22',
+        (SELECT id FROM pantries WHERE title = 'Casa de Campo')),
+       ('Compra do Sítio', '04538132', '2026-07-09', 40.00, 1, '2026-07-25',
+        (SELECT id FROM pantries WHERE title = 'Sítio'));
 
 -- PANTRY PRODUCTS
-INSERT INTO pantry_products (id, name, quantity, is_in_pantry, weight, price, brand, expiration_date, missing_date,
+INSERT INTO pantry_products (name, quantity, is_in_pantry, weight, price, brand, expiration_date, missing_date,
                              purchase_id, category_id)
-VALUES ('prod0001-0000-0000-0000-000000000001', 'Leite Integral 1L', 4, 1, 1.0, 5.50, 'Piracanjuba', '2026-04-10', NULL,
-        'pur00001-0000-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000001'),
-       ('prod0002-0000-0000-0000-000000000002', 'Arroz Branco 5kg', 1, 1, 5.0, 28.90, 'Camil', '2026-12-31', NULL,
-        'pur00001-0000-0000-0000-000000000001', 'c0000002-0000-0000-0000-000000000002'),
-       ('prod0003-0000-0000-0000-000000000003', 'Detergente Neutro', 2, 0, 0.5, 2.80, 'Ypê', '2027-01-01', '2026-03-06',
-        'pur00001-0000-0000-0000-000000000001', 'c0000003-0000-0000-0000-000000000003'),
-       ('prod0004-0000-0000-0000-000000000004', 'Suco de Laranja 1L', 2, 1, 1.0, 12.00, 'Prats', '2026-03-20', NULL,
-        'pur00002-0000-0000-0000-000000000002', 'c0000004-0000-0000-0000-000000000004'),
-       ('prod0005-0000-0000-0000-000000000005', 'Maçã Gala 1kg', 6, 1, 1.0, 8.90, 'Horti', '2026-03-18', NULL,
-        'pur00003-0000-0000-0000-000000000003', 'c0000005-0000-0000-0000-000000000005'),
-       ('prod0006-0000-0000-0000-000000000006', 'Peito de Frango 1kg', 2, 1, 1.0, 19.90, 'Sadia', '2026-03-25', NULL,
-        'pur00003-0000-0000-0000-000000000003', 'c0000006-0000-0000-0000-000000000006'),
-       ('prod0007-0000-0000-0000-000000000007', 'Pão de Forma', 1, 0, 0.5, 7.50, 'Bauducco', '2026-03-12', '2026-03-10',
-        'pur00004-0000-0000-0000-000000000004', 'c0000007-0000-0000-0000-000000000007'),
-       ('prod0008-0000-0000-0000-000000000008', 'Milho em Conserva', 3, 1, 0.2, 4.20, 'Quero', '2027-05-10', NULL,
-        'pur00005-0000-0000-0000-000000000005', 'c0000008-0000-0000-0000-000000000008'),
-       ('prod0009-0000-0000-0000-000000000009', 'Chocolate Ao Leite', 2, 1, 0.1, 6.00, 'Lacta', '2026-09-01', NULL,
-        'pur00006-0000-0000-0000-000000000006', 'c0000009-0000-0000-0000-000000000009'),
-       ('prod0010-0000-0000-0000-000000000010', 'Sabonete em Barra', 5, 1, 0.1, 3.10, 'Dove', '2028-01-01', NULL,
-        'pur00007-0000-0000-0000-000000000007', 'c0000010-0000-0000-0000-000000000010');
+VALUES ('Leite Integral 1L', 4, 1, 1.0, 7.50, 'Piracanjuba', '2026-04-10', NULL,
+        (SELECT id FROM purchases WHERE title = 'Compra do mês' AND purchase_date = '2026-03-01'),
+        (SELECT id FROM categories WHERE name = 'Laticínios')),
+
+       ('Arroz Branco 5kg', 1, 1, 5.0, 28.90, 'Camil', '2026-12-31', NULL,
+        (SELECT id FROM purchases WHERE title = 'Compra do mês' AND purchase_date = '2026-03-01'),
+        (SELECT id FROM categories WHERE name = 'Grãos e Cereais')),
+
+       ('Detergente Neutro', 2, 0, 0.5, 2.80, 'Ypê', '2027-01-01', '2026-03-06',
+        (SELECT id FROM purchases WHERE title = 'Compra do mês' AND purchase_date = '2026-03-01'),
+        (SELECT id FROM categories WHERE name = 'Limpeza')),
+
+       ('Suco de Laranja 1L', 2, 1, 1.0, 12.00, 'Prats', '2026-03-20', NULL,
+        (SELECT id FROM purchases WHERE title = 'Reposição semanal' AND purchase_date = '2026-03-02'),
+        (SELECT id FROM categories WHERE name = 'Bebidas')),
+
+       ('Maçã Gala 1kg', 6, 1, 1.0, 8.90, 'Horti', '2026-03-18', NULL,
+        (SELECT id FROM purchases WHERE title = 'Compras da praia' AND purchase_date = '2026-03-03'),
+        (SELECT id FROM categories WHERE name = 'Hortifruti')),
+
+       ('Peito de Frango 1kg', 2, 1, 1.0, 19.90, 'Sadia', '2026-03-25', NULL,
+        (SELECT id FROM purchases WHERE title = 'Compras da praia' AND purchase_date = '2026-03-03'),
+        (SELECT id FROM categories WHERE name = 'Carnes e Aves')),
+
+       ('Pão de Forma', 1, 0, 0.5, 7.50, 'Bauducco', '2026-03-12', '2026-03-10',
+        (SELECT id FROM purchases WHERE title = 'Produtos do escritório' AND purchase_date = '2026-03-04'),
+        (SELECT id FROM categories WHERE name = 'Padaria')),
+
+       ('Milho em Conserva', 3, 1, 0.2, 4.20, 'Quero', '2027-05-10', NULL,
+        (SELECT id FROM purchases WHERE title = 'Compra do apartamento' AND purchase_date = '2026-03-05'),
+        (SELECT id FROM categories WHERE name = 'Enlatados')),
+
+       ('Chocolate Ao Leite', 2, 1, 0.1, 6.00, 'Lacta', '2026-09-01', NULL,
+        (SELECT id FROM purchases WHERE title = 'Reposição do estúdio' AND purchase_date = '2026-03-06'),
+        (SELECT id FROM categories WHERE name = 'Doces e Snacks')),
+
+       ('Sabonete em Barra', 5, 1, NULL, 3.10, 'Dove', '2028-01-01', NULL,
+        (SELECT id FROM purchases WHERE title = 'Compra da república' AND purchase_date = '2026-03-07'),
+        (SELECT id FROM categories WHERE name = 'Higiene Pessoal')),
+
+       ('Shampoo Cabelos Lisos', 2, 1, NULL, 23.99, 'Seda', '2028-01-01', NULL,
+        (SELECT id FROM purchases WHERE title = 'Casa de Campo' AND purchase_date = '2026-03-07'),
+        (SELECT id FROM categories WHERE name = 'Higiene Pessoal')),
+
+       ('Bacon', 3, 1, NULL, 10.49, 'Seara', '2028-01-01', NULL,
+        (SELECT id FROM purchases WHERE title = 'Casa de Campo' AND purchase_date = '2026-03-07'),
+        (SELECT id FROM categories WHERE name = 'Carnes e Aves')),
+
+       ('Pote de Sorvete', 1, 1, 1.0, 28.99, 'Kibon', '2028-01-01', NULL,
+        (SELECT id FROM purchases WHERE title = 'Casa de Campo' AND purchase_date = '2026-03-07'),
+        (SELECT id FROM categories WHERE name = 'Doces e Snacks')),
+
+       ('Ração de Peixe', 1, 1, 1.0, 40.00, 'PetLove', '2028-01-01', NULL,
+        (SELECT id FROM purchases WHERE title = 'Compra do Sítio' AND purchase_date = '2026-07-09'),
+        (SELECT id FROM categories WHERE name = 'Grãos e Cereais'));
 
 -- GROCERY LISTS
-INSERT INTO grocery_lists (id, name, suggestion)
-VALUES ('l0000001-0000-0000-0000-000000000001', 'Compras de Março', 0),
-       ('l0000002-0000-0000-0000-000000000002', 'Reposição Semanal', 1),
-       ('l0000003-0000-0000-0000-000000000003', 'Churrasco Fim de Semana', 0),
-       ('l0000004-0000-0000-0000-000000000004', 'Produtos de Limpeza', 1),
-       ('l0000005-0000-0000-0000-000000000005', 'Feira do Mês', 0),
-       ('l0000006-0000-0000-0000-000000000006', 'Bebidas e Snacks', 0),
-       ('l0000007-0000-0000-0000-000000000007', 'Higiene Básica', 1),
-       ('l0000008-0000-0000-0000-000000000008', 'Café da Manhã', 0),
-       ('l0000009-0000-0000-0000-000000000009', 'Lanches Rápidos', 1),
-       ('l0000010-0000-0000-0000-000000000010', 'Estoque de Emergência', 0);
+INSERT INTO grocery_lists (name, suggestion)
+VALUES ('Compras de Março', 0),
+       ('Reposição Semanal', 1),
+       ('Churrasco Fim de Semana', 0),
+       ('Produtos de Limpeza', 1),
+       ('Feira do Mês', 0),
+       ('Bebidas e Snacks', 0),
+       ('Higiene Básica', 1),
+       ('Café da Manhã', 0),
+       ('Lanches Rápidos', 1),
+       ('Estoque de Emergência', 0);
 
 -- GROCERY_LISTS_PANTRY_PRODUCTS
 INSERT INTO grocery_lists_pantry_products (pantry_product_id, grocery_list_id)
-VALUES ('prod0001-0000-0000-0000-000000000001', 'l0000001-0000-0000-0000-000000000001'),
-       ('prod0002-0000-0000-0000-000000000002', 'l0000001-0000-0000-0000-000000000001'),
-       ('prod0003-0000-0000-0000-000000000003', 'l0000004-0000-0000-0000-000000000004'),
-       ('prod0004-0000-0000-0000-000000000004', 'l0000006-0000-0000-0000-000000000006'),
-       ('prod0005-0000-0000-0000-000000000005', 'l0000005-0000-0000-0000-000000000005'),
-       ('prod0006-0000-0000-0000-000000000006', 'l0000003-0000-0000-0000-000000000003'),
-       ('prod0007-0000-0000-0000-000000000007', 'l0000008-0000-0000-0000-000000000008'),
-       ('prod0008-0000-0000-0000-000000000008', 'l0000010-0000-0000-0000-000000000010'),
-       ('prod0009-0000-0000-0000-000000000009', 'l0000009-0000-0000-0000-000000000009'),
-       ('prod0010-0000-0000-0000-000000000010', 'l0000007-0000-0000-0000-000000000007');
+VALUES ((SELECT id FROM pantry_products WHERE name = 'Leite Integral 1L'),
+        (SELECT id FROM grocery_lists WHERE name = 'Compras de Março')),
+
+       ((SELECT id FROM pantry_products WHERE name = 'Arroz Branco 5kg'),
+        (SELECT id FROM grocery_lists WHERE name = 'Compras de Março')),
+
+       ((SELECT id FROM pantry_products WHERE name = 'Detergente Neutro'),
+        (SELECT id FROM grocery_lists WHERE name = 'Produtos de Limpeza')),
+
+       ((SELECT id FROM pantry_products WHERE name = 'Suco de Laranja 1L'),
+        (SELECT id FROM grocery_lists WHERE name = 'Bebidas e Snacks')),
+
+       ((SELECT id FROM pantry_products WHERE name = 'Maçã Gala 1kg'),
+        (SELECT id FROM grocery_lists WHERE name = 'Feira do Mês')),
+
+       ((SELECT id FROM pantry_products WHERE name = 'Peito de Frango 1kg'),
+        (SELECT id FROM grocery_lists WHERE name = 'Churrasco Fim de Semana')),
+
+       ((SELECT id FROM pantry_products WHERE name = 'Pão de Forma'),
+        (SELECT id FROM grocery_lists WHERE name = 'Café da Manhã')),
+
+       ((SELECT id FROM pantry_products WHERE name = 'Milho em Conserva'),
+        (SELECT id FROM grocery_lists WHERE name = 'Estoque de Emergência')),
+
+       ((SELECT id FROM pantry_products WHERE name = 'Chocolate Ao Leite'),
+        (SELECT id FROM grocery_lists WHERE name = 'Lanches Rápidos')),
+
+       ((SELECT id FROM pantry_products WHERE name = 'Sabonete em Barra'),
+        (SELECT id FROM grocery_lists WHERE name = 'Higiene Básica'));
