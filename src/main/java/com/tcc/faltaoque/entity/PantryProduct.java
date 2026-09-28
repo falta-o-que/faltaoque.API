@@ -29,10 +29,12 @@ public class PantryProduct {
     private String name;
 
     @Column(nullable = false)
-    private Byte quantity;
+    @Builder.Default
+    private int quantity = 1;
 
     @Column(name = "is_in_pantry", nullable = false)
-    private Boolean isInPantry;
+    @Builder.Default
+    private Boolean isInPantry = true;
 
     private Double weight;
 
@@ -52,11 +54,11 @@ public class PantryProduct {
 
     @ManyToOne
     @JoinColumn(name = "purchase_id", nullable = false)
-    private Purchase purchase;
+    private Purchase purchaseId;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    private Category categoryId;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "pantryProducts")

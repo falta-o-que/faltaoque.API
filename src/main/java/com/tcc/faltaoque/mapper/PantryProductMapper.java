@@ -2,11 +2,13 @@ package com.tcc.faltaoque.mapper;
 
 import com.tcc.faltaoque.dto.request.PantryProductRequest;
 import com.tcc.faltaoque.dto.response.PantryProductResponse;
+import com.tcc.faltaoque.entity.Category;
 import com.tcc.faltaoque.entity.PantryProduct;
+import com.tcc.faltaoque.entity.Purchase;
 
 public class PantryProductMapper {
 
-    public static PantryProduct toRequest(PantryProductRequest request) {
+    public static PantryProduct toRequest(PantryProductRequest request, Purchase purchase, Category category) {
         return PantryProduct
                 .builder()
                 .name(request.name())
@@ -17,12 +19,12 @@ public class PantryProductMapper {
                 .brand(request.brand())
                 .expirationDate(request.expirationDate())
                 .missingDate(request.missingDate())
-                .purchase(request.purchaseId())
-                .category(request.categoryId())
+                .purchaseId(purchase)
+                .categoryId(category)
                 .build();
     }
 
-    public static PantryProductResponse toEntity(PantryProduct response) {
+    public static PantryProductResponse toEntity(PantryProduct response, Purchase purchase, Category category) {
         return PantryProductResponse
                 .builder()
                 .id(response.getId())
@@ -34,8 +36,8 @@ public class PantryProductMapper {
                 .brand(response.getBrand())
                 .expirationDate(response.getExpirationDate())
                 .missingDate(response.getMissingDate())
-                .purchaseId(response.getId())
-                .categoryId(response.getId())
+                .purchaseId(purchase.getId())
+                .categoryId(category.getId())
                 .build();
     }
     

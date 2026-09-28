@@ -1,10 +1,9 @@
 package com.tcc.faltaoque.dto.request;
 
-import com.tcc.faltaoque.enums.Avatar;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Email;
 
 public record UserRequest(
 		@NotBlank(message = "Por favor, digite o seu nome")
@@ -18,7 +17,8 @@ public record UserRequest(
 		@Size(min = 8, max = 64, message = "A senha deve ter entre 8 e 64 caracteres")
 		String password,
 		@NotNull(message = "Por favor, selecione um avatar")
-		Avatar avatar
+		int avatar,
+		boolean isActive
 
 ) {
 }

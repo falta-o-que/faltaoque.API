@@ -6,26 +6,28 @@ import com.tcc.faltaoque.entity.Purchase;
 
 public class PurchaseMapper {
 
-    public static Purchase toRequest(PurchaseRequest request) {
+    public static Purchase toEntity(PurchaseRequest request) {
         return Purchase
                 .builder()
+                .title(request.title())
                 .location(request.location())
                 .purchaseDate(request.purchaseDate())
                 .totalPrice(request.totalPrice())
                 .totalProducts(request.totalProducts())
-                .finishProducts(request.finishProducts())
+                .missingProducts(request.missingProducts())
                 .build();
     }
 
-    public static PurchaseResponse toEntity(Purchase entity) {
+    public static PurchaseResponse toResponse(Purchase entity) {
         return PurchaseResponse
                 .builder()
                 .id(entity.getId())
+                .title(entity.getTitle())
                 .location(entity.getLocation())
                 .purchaseDate(entity.getPurchaseDate())
                 .totalPrice(entity.getTotalPrice())
                 .totalProducts(entity.getTotalProducts())
-                .finishProducts(entity.getFinishProducts())
+                .missingProducts(entity.getMissingProducts())
                 .build();
     }
 }
