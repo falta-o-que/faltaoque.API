@@ -7,6 +7,6 @@ public record PantryResponse(
         String id,
         String title,
         String location,
-        int colorId,
+        int color,
         String shareInvite) {
 }

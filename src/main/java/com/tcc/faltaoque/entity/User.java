@@ -33,7 +33,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "avatar_id", nullable = false)
-    private Color avatarId;
+    private Color avatar;
 
     @Column(nullable = false)
     @Builder.Default

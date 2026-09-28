@@ -7,7 +7,7 @@ public record UserResponse(
         String id,
         String name,
         String email,
-        int avatarId,
+        int avatar,
         int role,
         boolean isActive
 ) {

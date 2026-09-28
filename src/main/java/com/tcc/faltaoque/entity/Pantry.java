@@ -30,7 +30,7 @@ public class Pantry {
 
     @ManyToOne
     @JoinColumn(name="color_id", nullable = false)
-    private Color colorId;
+    private Color color;
 
     @OneToOne
     @JoinColumn(name = "share_invite_id")

@@ -15,7 +15,7 @@ public class UserMapper {
                 .name(request.name())
                 .email(request.email())
                 .password(request.password())
-                .avatarId(avatar)
+                .avatar(avatar)
                 .isActive(request.isActive())
                 .build();
     }
@@ -26,7 +26,7 @@ public class UserMapper {
                 .id(response.getId())
                 .name(response.getName())
                 .email(response.getEmail())
-                .avatarId(avatar.getId())
+                .avatar(avatar.getId())
                 .isActive(response.getIsActive())
                 .build();
     }
