@@ -7,9 +7,9 @@ public record PurchaseRequest(
         String title,
         String location,
         LocalDate purchaseDate,
-        BigDecimal totalPrice,
-        int totalProducts,
-        LocalDate missingProducts,
+        boolean isFinished,
+        LocalDate finishDate,
+        String qrCodeId,
         String pantryId
 ) {
 }

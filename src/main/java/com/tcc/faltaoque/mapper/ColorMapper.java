@@ -3,7 +3,9 @@ package com.tcc.faltaoque.mapper;
 import com.tcc.faltaoque.dto.request.ColorRequest;
 import com.tcc.faltaoque.dto.response.ColorResponse;
 import com.tcc.faltaoque.entity.Color;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class ColorMapper {
 
     public static Color toEntity(ColorRequest request) {

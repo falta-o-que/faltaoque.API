@@ -38,9 +38,15 @@ public class Purchase {
     @Column(name = "total_products", nullable = false)
     private int totalProducts;
 
+    @Column(name = "is_finished")
+    private boolean isFinished;
+
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @Column(name = "missing_products", nullable = false)
-    private LocalDate missingProducts;
+    @Column(name = "finish_date")
+    private LocalDate finishDate;
+
+    @Column(name = "qr_code_id", length = 44)
+    private String qrCodeId;
 
     @ManyToOne
     @JoinColumn(name = "pantry_id", nullable = false)

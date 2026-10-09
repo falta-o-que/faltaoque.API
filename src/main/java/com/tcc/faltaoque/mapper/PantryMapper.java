@@ -5,7 +5,9 @@ import com.tcc.faltaoque.dto.response.PantryResponse;
 import com.tcc.faltaoque.entity.Color;
 import com.tcc.faltaoque.entity.Pantry;
 import com.tcc.faltaoque.entity.PantryInvite;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class PantryMapper {
 
     public static Pantry toEntity(PantryRequest request, Color color, PantryInvite invite) {

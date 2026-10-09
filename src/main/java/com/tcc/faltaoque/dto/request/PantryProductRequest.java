@@ -6,13 +6,12 @@ import java.time.LocalDate;
 public record PantryProductRequest(
         String name,
         int quantity,
-        Boolean isInPantry,
-        Double weight,
+        Double contentValue,
+        Byte unitOfMeasure,
         BigDecimal price,
         String brand,
         LocalDate expirationDate,
-        LocalDate missingDate,
-        String purchaseId,
-        int categoryId
+        String purchase,
+        int category
 ) {
 }

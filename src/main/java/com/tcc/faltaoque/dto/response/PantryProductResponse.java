@@ -9,13 +9,16 @@ public record PantryProductResponse(
         String id,
         String name,
         int quantity,
+        int currentQuantity,
         Boolean isInPantry,
-        Double weight,
+        Double contentValue,
+        Byte unitOfMeasure,
         BigDecimal price,
         String brand,
         LocalDate expirationDate,
-        LocalDate missingDate,
-        String purchaseId,
-        int categoryId
+        LocalDate finishDate,
+        boolean isDeleted,
+        String purchase,
+        int category
 ) {
 }

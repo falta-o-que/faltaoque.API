@@ -94,13 +94,13 @@ VALUES ((SELECT id FROM users WHERE email = 'admin2@email.com'),
         (SELECT id FROM pantries WHERE title = 'Despensa Principal')),
 
        ((SELECT id FROM users WHERE email = 'lucas.ferreira@email.com'),
-        (SELECT id FROM pantries WHERE title = 'Escritório da empresa taltal')),
+        (SELECT id FROM pantries WHERE title = 'Escritório da Empresa Taltal')),
 
        ((SELECT id FROM users WHERE email = 'beatriz.costa@email.com'),
         (SELECT id FROM pantries WHERE title = 'Sítio')),
 
        ((SELECT id FROM users WHERE email = 'fernanda.lima@email.com'),
-        (SELECT id FROM pantries WHERE title = 'Estúdio da aninha')),
+        (SELECT id FROM pantries WHERE title = 'Estúdio da Aninha')),
 
        ((SELECT id FROM users WHERE email = 'gabriel.alves@email.com'),
         (SELECT id FROM pantries WHERE title = 'República')),
@@ -125,132 +125,246 @@ VALUES ('Laticínios'),
        ('Higiene Pessoal');
 
 -- PURCHASES
-INSERT INTO purchases (title, location, purchase_date, total_price, total_products, missing_products, pantry_id)
-VALUES ('Compra do mês', '01310100', '2026-03-01', 37.20, 3, '2026-03-25',
+INSERT INTO purchases (title, location, purchase_date, total_price, total_products, is_finished, finish_date,
+                       qr_code_id, pantry_id)
+VALUES ('Compra do mês', '01310100', '2026-03-01', 37.20, 3,
+        true, '2026-03-25', '58392017463829104736581920473658192047365819',
         (SELECT id FROM pantries WHERE title = 'Despensa Principal')),
-       ('Reposição semanal', '01310100', '2026-03-02', 80.50, 1, '2026-03-20',
+
+       ('Reposição semanal', '01310100', '2026-03-02', 80.50, 1,
+        true, '2026-03-20', '72946183027591836402951763840592716384051729',
         (SELECT id FROM pantries WHERE title = 'Despensa Principal')),
-       ('Compras da praia', '22041002', '2026-03-03', 210.00, 2, '2026-04-01',
+
+       ('Compras da praia', '22041002', '2026-03-03', 210.00, 2,
+        true, '2026-04-01', '10482736501928473650192847365019283746501928',
         (SELECT id FROM pantries WHERE title = 'Casa da Praia')),
-       ('Produtos do escritório', '30140071', '2026-03-04', 45.90, 1, '2026-03-15',
+
+       ('Produtos do escritório', '30140071', '2026-03-04', 45.90, 1,
+        true, '2026-03-15', '83629104758203917465029183746502918374650291',
         (SELECT id FROM pantries WHERE title = 'Escritório da Empresa Taltal')),
-       ('Compra do apartamento', '80010000', '2026-03-05', 99.00, 1, '2026-03-30',
+
+       ('Compra do apartamento', '80010000', '2026-03-05', 99.00, 1,
+        true, '2026-03-30', '49281736502918473650291837465029183746502918',
         (SELECT id FROM pantries WHERE title = 'Apartamento Lucas')),
-       ('Reposição do estúdio', '60160120', '2026-03-06', 120.30, 1, '2026-03-28',
+
+       ('Reposição do estúdio', '60160120', '2026-03-06', 120.30, 1,
+        true, '2026-03-28', '67102938475620193847562019384756201938475620',
         (SELECT id FROM pantries WHERE title = 'Estúdio da Aninha')),
-       ('Compra da república', '90010000', '2026-03-07', 35.00, 1, '2026-03-18',
+
+       ('Compra da república', '90010000', '2026-03-07', 35.00, 1,
+        true, '2026-03-18', '91827364501928374650192837465019283746501928',
         (SELECT id FROM pantries WHERE title = 'República')),
-       ('Compra para a mini despensa', '70040900', '2026-03-08', 310.00, 0, '2026-04-10',
+
+       ('Compra para a mini despensa', '70040900', '2026-03-08', 310.00, 0,
+        false, NULL, '35719204836571029384756102938475610293847561',
         (SELECT id FROM pantries WHERE title = 'Despensinhaaa')),
-       ('Casa de Campo', '13010000', '2026-03-09', 67.80, 0, '2026-03-22',
+
+       ('Casa de Campo', '13010000', '2026-03-09', 67.80, 0,
+        true, '2026-03-22', '62039485710293847561029384756102938475610293',
         (SELECT id FROM pantries WHERE title = 'Casa de Campo')),
-       ('Estoque de emergência', '88010000', '2026-03-10', 189.90, 0, '2026-04-05',
+
+       ('Estoque de emergência', '88010000', '2026-03-10', 189.90, 0,
+        false, NULL, '84572019384650192837465019283746501928374650',
+        (SELECT id FROM pantries WHERE title = 'Reserva de Emergência')),
+
+       ('Casa de Campo', '13010000', '2026-03-07', 63.47, 3,
+        true, '2026-03-22', '27384910572638491057263849105726384910572638',
         (SELECT id FROM pantries WHERE title = 'Casa de Campo')),
-       ('Casa de Campo', '13010000', '2026-03-07', 63.47, 3, '2026-03-22',
-        (SELECT id FROM pantries WHERE title = 'Casa de Campo')),
-       ('Compra do Sítio', '04538132', '2026-07-09', 40.00, 1, '2026-07-25',
+
+       ('Compra do Sítio', '04538132', '2026-07-09', 40.00, 1,
+        true, '2026-07-25', '50918273645091827364509182736450918273645091',
         (SELECT id FROM pantries WHERE title = 'Sítio'));
 
 -- PANTRY PRODUCTS
-INSERT INTO pantry_products (name, quantity, is_in_pantry, weight, price, brand, expiration_date, missing_date,
-                             purchase_id, category_id)
-VALUES ('Leite Integral 1L', 4, 1, 1.0, 7.50, 'Piracanjuba', '2026-04-10', NULL,
-        (SELECT id FROM purchases WHERE name = 'Compra do mês' AND purchase_date = '2026-03-01'),
+INSERT INTO pantry_products
+(name, quantity, current_quantity, is_in_pantry, content_value,
+ unit_of_measure, price, brand, expiration_date, finish_date,
+ is_deleted, purchase_id, category_id)
+VALUES ('Leite Integral 1L', 4, 4, true, 1.0,
+        1, 7.50, 'Piracanjuba', '2026-04-10', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Compra do mês'
+           AND purchase_date = '2026-03-01'),
         (SELECT id FROM categories WHERE name = 'Laticínios')),
 
-       ('Arroz Branco 5kg', 1, 1, 5.0, 28.90, 'Camil', '2026-12-31', NULL,
-        (SELECT id FROM purchases WHERE name = 'Compra do mês' AND purchase_date = '2026-03-01'),
+       ('Arroz Branco 5kg', 1, 1, true, 5.0,
+        1, 28.90, 'Camil', '2026-12-31', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Compra do mês'
+           AND purchase_date = '2026-03-01'),
         (SELECT id FROM categories WHERE name = 'Grãos e Cereais')),
 
-       ('Detergente Neutro', 2, 0, 0.5, 2.80, 'Ypê', '2027-01-01', '2026-03-06',
-        (SELECT id FROM purchases WHERE name = 'Compra do mês' AND purchase_date = '2026-03-01'),
+       ('Detergente Neutro', 2, 0, false, 0.5,
+        1, 2.80, 'Ypê', '2027-01-01', '2026-03-06', false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Compra do mês'
+           AND purchase_date = '2026-03-01'),
         (SELECT id FROM categories WHERE name = 'Limpeza')),
 
-       ('Suco de Laranja 1L', 2, 1, 1.0, 12.00, 'Prats', '2026-03-20', NULL,
-        (SELECT id FROM purchases WHERE name = 'Reposição semanal' AND purchase_date = '2026-03-02'),
+       ('Suco de Laranja 1L', 2, 2, true, 1.0,
+        1, 12.00, 'Prats', '2026-03-20', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Reposição semanal'
+           AND purchase_date = '2026-03-02'),
         (SELECT id FROM categories WHERE name = 'Bebidas')),
 
-       ('Maçã Gala 1kg', 6, 1, 1.0, 8.90, 'Horti', '2026-03-18', NULL,
-        (SELECT id FROM purchases WHERE name = 'Compras da praia' AND purchase_date = '2026-03-03'),
+       ('Maçã Gala 1kg', 6, 6, true, 1.0,
+        1, 8.90, 'Horti', '2026-03-18', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Compras da praia'
+           AND purchase_date = '2026-03-03'),
         (SELECT id FROM categories WHERE name = 'Hortifruti')),
 
-       ('Peito de Frango 1kg', 2, 1, 1.0, 19.90, 'Sadia', '2026-03-25', NULL,
-        (SELECT id FROM purchases WHERE name = 'Compras da praia' AND purchase_date = '2026-03-03'),
+       ('Peito de Frango 1kg', 2, 2, true, 1.0,
+        1, 19.90, 'Sadia', '2026-03-25', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Compras da praia'
+           AND purchase_date = '2026-03-03'),
         (SELECT id FROM categories WHERE name = 'Carnes e Aves')),
 
-       ('Pão de Forma', 1, 0, 0.5, 7.50, 'Bauducco', '2026-03-12', '2026-03-10',
-        (SELECT id FROM purchases WHERE name = 'Produtos do escritório' AND purchase_date = '2026-03-04'),
+       ('Pão de Forma', 1, 0, false, 0.5,
+        1, 7.50, 'Bauducco', '2026-03-12', '2026-03-10', false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Produtos do escritório'
+           AND purchase_date = '2026-03-04'),
         (SELECT id FROM categories WHERE name = 'Padaria')),
 
-       ('Milho em Conserva', 3, 1, 0.2, 4.20, 'Quero', '2027-05-10', NULL,
-        (SELECT id FROM purchases WHERE name = 'Compra do apartamento' AND purchase_date = '2026-03-05'),
+       ('Milho em Conserva', 3, 3, true, 0.2,
+        1, 4.20, 'Quero', '2027-05-10', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Compra do apartamento'
+           AND purchase_date = '2026-03-05'),
         (SELECT id FROM categories WHERE name = 'Enlatados')),
 
-       ('Chocolate Ao Leite', 2, 1, 0.1, 6.00, 'Lacta', '2026-09-01', NULL,
-        (SELECT id FROM purchases WHERE name = 'Reposição do estúdio' AND purchase_date = '2026-03-06'),
+       ('Chocolate Ao Leite', 2, 2, true, 0.1,
+        1, 6.00, 'Lacta', '2026-09-01', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Reposição do estúdio'
+           AND purchase_date = '2026-03-06'),
         (SELECT id FROM categories WHERE name = 'Doces e Snacks')),
 
-       ('Sabonete em Barra', 5, 1, NULL, 3.10, 'Dove', '2028-01-01', NULL,
-        (SELECT id FROM purchases WHERE name = 'Compra da república' AND purchase_date = '2026-03-07'),
+       ('Sabonete em Barra', 5, 5, true, NULL,
+        NULL, 3.10, 'Dove', '2028-01-01', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Compra da república'
+           AND purchase_date = '2026-03-07'),
         (SELECT id FROM categories WHERE name = 'Higiene Pessoal')),
 
-       ('Shampoo Cabelos Lisos', 2, 1, NULL, 23.99, 'Seda', '2028-01-01', NULL,
-        (SELECT id FROM purchases WHERE name = 'Casa de Campo' AND purchase_date = '2026-03-07'),
+       ('Shampoo Cabelos Lisos', 2, 2, true, NULL,
+        NULL, 23.99, 'Seda', '2028-01-01', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Casa de Campo'
+           AND purchase_date = '2026-03-07'),
         (SELECT id FROM categories WHERE name = 'Higiene Pessoal')),
 
-       ('Bacon', 3, 1, NULL, 10.49, 'Seara', '2028-01-01', NULL,
-        (SELECT id FROM purchases WHERE name = 'Casa de Campo' AND purchase_date = '2026-03-07'),
+       ('Bacon', 3, 3, true, NULL,
+        NULL, 10.49, 'Seara', '2028-01-01', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Casa de Campo'
+           AND purchase_date = '2026-03-07'),
         (SELECT id FROM categories WHERE name = 'Carnes e Aves')),
 
-       ('Pote de Sorvete', 1, 1, 1.0, 28.99, 'Kibon', '2028-01-01', NULL,
-        (SELECT id FROM purchases WHERE name = 'Casa de Campo' AND purchase_date = '2026-03-07'),
+       ('Pote de Sorvete', 1, 1, true, 1.0,
+        1, 28.99, 'Kibon', '2028-01-01', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Casa de Campo'
+           AND purchase_date = '2026-03-07'),
         (SELECT id FROM categories WHERE name = 'Doces e Snacks')),
 
-       ('Ração de Peixe', 1, 1, 1.0, 40.00, 'PetLove', '2028-01-01', NULL,
-        (SELECT id FROM purchases WHERE name = 'Compra do Sítio' AND purchase_date = '2026-07-09'),
+       ('Ração de Peixe', 1, 1, true, 1.0,
+        1, 40.00, 'PetLove', '2028-01-01', NULL, false,
+        (SELECT id
+         FROM purchases
+         WHERE title = 'Compra do Sítio'
+           AND purchase_date = '2026-07-09'),
         (SELECT id FROM categories WHERE name = 'Grãos e Cereais'));
 
+
 -- GROCERY LISTS
-INSERT INTO grocery_lists (name, suggestion)
-VALUES ('Compras de Março', 0),
-       ('Reposição Semanal', 1),
-       ('Churrasco Fim de Semana', 0),
-       ('Produtos de Limpeza', 1),
-       ('Feira do Mês', 0),
-       ('Bebidas e Snacks', 0),
-       ('Higiene Básica', 1),
-       ('Café da Manhã', 0),
-       ('Lanches Rápidos', 1),
-       ('Estoque de Emergência', 0);
+INSERT INTO grocery_lists (name, date, location, suggestion, estimated_price, pantry_id, is_active)
+VALUES ('Compras de Março', '2026-03-01', '01310100', 0, 250.00,
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal'), true),
 
--- GROCERY_LISTS_PANTRY_PRODUCTS
-INSERT INTO grocery_lists_pantry_products (pantry_product_id, grocery_list_id)
-VALUES ((SELECT id FROM pantry_products WHERE name = 'Leite Integral 1L'),
-        (SELECT id FROM grocery_lists WHERE name = 'Compras de Março')),
+       ('Reposição Semanal', '2026-03-08', '01310100', 1, 120.00,
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal'), true),
 
-       ((SELECT id FROM pantry_products WHERE name = 'Arroz Branco 5kg'),
-        (SELECT id FROM grocery_lists WHERE name = 'Compras de Março')),
+       ('Churrasco Fim de Semana', '2026-03-15', '22041002', 0, 350.00,
+        (SELECT id FROM pantries WHERE title = 'Casa da Praia'), false),
 
-       ((SELECT id FROM pantry_products WHERE name = 'Detergente Neutro'),
-        (SELECT id FROM grocery_lists WHERE name = 'Produtos de Limpeza')),
+       ('Produtos de Limpeza', '2026-03-20', '30140071', 1, 180.00,
+        (SELECT id FROM pantries WHERE title = 'Escritório da Empresa Taltal'), true),
 
-       ((SELECT id FROM pantry_products WHERE name = 'Suco de Laranja 1L'),
-        (SELECT id FROM grocery_lists WHERE name = 'Bebidas e Snacks')),
+       ('Feira do Mês', '2026-04-01', '01310100', 0, 200.00,
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal'), true),
 
-       ((SELECT id FROM pantry_products WHERE name = 'Maçã Gala 1kg'),
-        (SELECT id FROM grocery_lists WHERE name = 'Feira do Mês')),
+       ('Bebidas e Snacks', '2026-04-05', '90010000', 0, 150.00,
+        (SELECT id FROM pantries WHERE title = 'República'), false),
 
-       ((SELECT id FROM pantry_products WHERE name = 'Peito de Frango 1kg'),
-        (SELECT id FROM grocery_lists WHERE name = 'Churrasco Fim de Semana')),
+       ('Higiene Básica', '2026-04-10', '80010000', 1, 100.00,
+        (SELECT id FROM pantries WHERE title = 'Apartamento Lucas'), true),
 
-       ((SELECT id FROM pantry_products WHERE name = 'Pão de Forma'),
-        (SELECT id FROM grocery_lists WHERE name = 'Café da Manhã')),
+       ('Café da Manhã', '2026-04-15', '60160120', 0, 90.00,
+        (SELECT id FROM pantries WHERE title = 'Estúdio da Aninha'), false),
 
-       ((SELECT id FROM pantry_products WHERE name = 'Milho em Conserva'),
-        (SELECT id FROM grocery_lists WHERE name = 'Estoque de Emergência')),
+       ('Lanches Rápidos', '2026-04-20', '70040900', 1, 130.00,
+        (SELECT id FROM pantries WHERE title = 'Despensinhaaa'), true),
 
-       ((SELECT id FROM pantry_products WHERE name = 'Chocolate Ao Leite'),
-        (SELECT id FROM grocery_lists WHERE name = 'Lanches Rápidos')),
+       ('Estoque de Emergência', '2026-04-25', '88010000', 0, 400.00,
+        (SELECT id FROM pantries WHERE title = 'Reserva de Emergência'), true);
 
-       ((SELECT id FROM pantry_products WHERE name = 'Sabonete em Barra'),
-        (SELECT id FROM grocery_lists WHERE name = 'Higiene Básica'));
+INSERT INTO grocery_list_products
+(name, quantity, content_value, unit_of_measure, is_taken,
+ grocery_list_id, category_id)
+VALUES ('Leite Integral 1L', 2, 1.0, 1, false,
+        (SELECT id FROM grocery_lists WHERE name = 'Compras de Março'),
+        (SELECT id FROM categories WHERE name = 'Laticínios')),
+
+       ('Arroz Branco 5kg', 1, 5.0, 1, true,
+        (SELECT id FROM grocery_lists WHERE name = 'Compras de Março'),
+        (SELECT id FROM categories WHERE name = 'Grãos e Cereais')),
+
+       ('Detergente Neutro', 3, 0.5, 1, false,
+        (SELECT id FROM grocery_lists WHERE name = 'Produtos de Limpeza'),
+        (SELECT id FROM categories WHERE name = 'Limpeza')),
+
+       ('Suco de Laranja 1L', 2, 1.0, 1, true,
+        (SELECT id FROM grocery_lists WHERE name = 'Bebidas e Snacks'),
+        (SELECT id FROM categories WHERE name = 'Bebidas')),
+
+       ('Maçã Gala 1kg', 3, 1.0, 1, false,
+        (SELECT id FROM grocery_lists WHERE name = 'Feira do Mês'),
+        (SELECT id FROM categories WHERE name = 'Hortifruti')),
+
+       ('Peito de Frango 1kg', 2, 1.0, 1, false,
+        (SELECT id FROM grocery_lists WHERE name = 'Churrasco Fim de Semana'),
+        (SELECT id FROM categories WHERE name = 'Carnes e Aves')),
+
+       ('Pão de Forma', 2, 0.5, 1, true,
+        (SELECT id FROM grocery_lists WHERE name = 'Café da Manhã'),
+        (SELECT id FROM categories WHERE name = 'Padaria')),
+
+       ('Milho em Conserva', 2, 0.2, 1, false,
+        (SELECT id FROM grocery_lists WHERE name = 'Estoque de Emergência'),
+        (SELECT id FROM categories WHERE name = 'Enlatados')),
+
+       ('Chocolate Ao Leite', 3, 0.1, 1, false,
+        (SELECT id FROM grocery_lists WHERE name = 'Lanches Rápidos'),
+        (SELECT id FROM categories WHERE name = 'Doces e Snacks')),
+
+       ('Sabonete em Barra', 4, NULL, NULL, true,
+        (SELECT id FROM grocery_lists WHERE name = 'Higiene Básica'),
+        (SELECT id FROM categories WHERE name = 'Higiene Pessoal'));
+

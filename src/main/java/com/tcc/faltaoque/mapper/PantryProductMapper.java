@@ -5,7 +5,9 @@ import com.tcc.faltaoque.dto.response.PantryProductResponse;
 import com.tcc.faltaoque.entity.Category;
 import com.tcc.faltaoque.entity.PantryProduct;
 import com.tcc.faltaoque.entity.Purchase;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class PantryProductMapper {
 
     public static PantryProduct toRequest(PantryProductRequest request, Purchase purchase, Category category) {
@@ -13,14 +15,14 @@ public class PantryProductMapper {
                 .builder()
                 .name(request.name())
                 .quantity(request.quantity())
-                .isInPantry(request.isInPantry())
-                .weight(request.weight())
+                .currentQuantity(request.quantity())
+                .contentValue(request.contentValue())
+                .unitOfMeasure(request.unitOfMeasure())
                 .price(request.price())
                 .brand(request.brand())
                 .expirationDate(request.expirationDate())
-                .missingDate(request.missingDate())
-                .purchaseId(purchase)
-                .categoryId(category)
+                .purchase(purchase)
+                .category(category)
                 .build();
     }
 
@@ -30,15 +32,17 @@ public class PantryProductMapper {
                 .id(response.getId())
                 .name(response.getName())
                 .quantity(response.getQuantity())
-                .isInPantry(response.getIsInPantry())
-                .weight(response.getWeight())
+                .currentQuantity(response.getCurrentQuantity())
+                .contentValue(response.getContentValue())
+                .unitOfMeasure(response.getUnitOfMeasure())
+                .finishDate(response.getFinishDate())
+                .isDeleted(response.isDeleted())
                 .price(response.getPrice())
                 .brand(response.getBrand())
                 .expirationDate(response.getExpirationDate())
-                .missingDate(response.getMissingDate())
-                .purchaseId(purchase.getId())
-                .categoryId(category.getId())
+                .purchase(purchase.getId())
+                .category(category.getId())
                 .build();
     }
-    
+
 }
