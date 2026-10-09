@@ -1,7 +1,6 @@
 package com.tcc.faltaoque.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,12 +26,22 @@ public class PantryProduct {
     private String name;
 
     @Column(nullable = false)
-    private Byte quantity;
+    @Builder.Default
+    private int quantity = 1;
+
+    @Column(name = " current_quantity", nullable = false)
+    @Builder.Default
+    private int currentQuantity = 1;
 
     @Column(name = "is_in_pantry", nullable = false)
-    private Boolean isInPantry;
+    @Builder.Default
+    private Boolean isInPantry = true;
 
-    private Double weight;
+    @Column(name = "content_value")
+    private Double contentValue;
+
+    @Column(name = "unit_of_measure")
+    private Byte unitOfMeasure;
 
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
@@ -47,8 +54,12 @@ public class PantryProduct {
     private LocalDate expirationDate;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @Column(name = "missing_date")
-    private LocalDate missingDate;
+    @Column(name = "finish_date")
+    private LocalDate finishDate;
+
+    @Column(name = "is_deleted", nullable = false)
+    @Builder.Default
+    private boolean isDeleted = false;
 
     @ManyToOne
     @JoinColumn(name = "purchase_id", nullable = false)
@@ -57,8 +68,4 @@ public class PantryProduct {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "pantryProducts")
-    private List<GroceryList> groceryLists = new ArrayList<>();
 }

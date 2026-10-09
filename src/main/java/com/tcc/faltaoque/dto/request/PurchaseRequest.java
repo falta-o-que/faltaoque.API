@@ -4,11 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record PurchaseRequest(
+        String title,
         String location,
         LocalDate purchaseDate,
-        BigDecimal totalPrice,
-        Integer totalProducts,
-        LocalDate finishProducts,
+        boolean isFinished,
+        LocalDate finishDate,
+        String qrCodeId,
         String pantryId
 ) {
 }

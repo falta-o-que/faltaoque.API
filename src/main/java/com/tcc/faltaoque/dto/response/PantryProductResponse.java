@@ -8,14 +8,17 @@ import lombok.Builder;
 public record PantryProductResponse(
         String id,
         String name,
-        Byte quantity,
+        int quantity,
+        int currentQuantity,
         Boolean isInPantry,
-        Double weight,
+        Double contentValue,
+        Byte unitOfMeasure,
         BigDecimal price,
         String brand,
         LocalDate expirationDate,
-        LocalDate missingDate,
-        String purchaseId,
-        String categoryId
+        LocalDate finishDate,
+        boolean isDeleted,
+        String purchase,
+        int category
 ) {
 }
