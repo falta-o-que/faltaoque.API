@@ -3,8 +3,14 @@ package com.tcc.faltaoque.service;
 import com.tcc.faltaoque.dto.request.PantryRequest;
 import com.tcc.faltaoque.dto.response.PantryResponse;
 import com.tcc.faltaoque.entity.Pantry;
+import com.tcc.faltaoque.entity.Color;
+import com.tcc.faltaoque.entity.PantryInvite;
 import com.tcc.faltaoque.mapper.PantryMapper;
 import com.tcc.faltaoque.repository.PantryRepository;
+import com.tcc.faltaoque.repository.ColorRepository;
+import com.tcc.faltaoque.repository.PantryInviteRepository;
+import com.tcc.faltaoque.exception.ColorNotFoundException;
+import com.tcc.faltaoque.exception.PantryInviteNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,38 +24,51 @@ import java.util.stream.Collectors;
 public class PantryService {
 
     private final PantryRepository pantryRepository;
+    private final ColorRepository colorRepository;
+    private final PantryInviteRepository pantryInviteRepository;
 
     //Criar despensa
     public PantryResponse createPantry(PantryRequest pantryRequest){
-        Pantry pantry = PantryMapper.toRequest(pantryRequest);
+        Color color = colorRepository.findById(pantryRequest.color())
+            .orElseThrow(() -> new ColorNotFoundException(pantryRequest.color()));
+        PantryInvite pantryInvite = pantryInviteRepository.findById(pantryRequest.shareInvite())
+            .orElseThrow(() -> new PantryInviteNotFoundException(pantryRequest.shareInvite()));
+
+        Pantry pantry = PantryMapper.toEntity(pantryRequest, color, pantryInvite);
         Pantry savedPantry = pantryRepository.save(pantry);
-        return PantryMapper.toEntity(savedPantry);
+
+        return PantryMapper.toResponse(
+            savedPantry, savedPantry.getColor(), savedPantry.getShareInvite());
     }
 
     //Listar todas as despensas
     public List<PantryResponse> listAllPantries(){
         return pantryRepository.findAll()
-                .stream()
-                .map(PantryMapper::toEntity)
-                .collect(Collectors.toList());
-
+            .stream()
+            .map(pantry -> PantryMapper.toResponse(
+                pantry, pantry.getColor(), pantry.getShareInvite()))
+            .collect(Collectors.toList());
     }
 
     //Buscar por id
     public PantryResponse findPantryById(String id){
         Pantry pantry = findPantryOrThrow(id);
-        return PantryMapper.toEntity(pantry);
+        return PantryMapper.toResponse(pantry, pantry.getColor(), pantry.getShareInvite());
     }
 
     //Editar despensa
     public PantryResponse updatePantry(String id, PantryRequest pantryRequest){
         Pantry pantry = findPantryOrThrow(id);
+        Color color = colorRepository.findById(pantryRequest.color())
+            .orElseThrow(() -> new ColorNotFoundException(pantryRequest.color()));
+
         pantry.setTitle(pantryRequest.title());
         pantry.setLocation(pantryRequest.location());
-        pantry.setColor(pantryRequest.color());
+        pantry.setColor(color);
 
         Pantry updatedPantry = pantryRepository.save(pantry);
-        return PantryMapper.toEntity(updatedPantry);
+        return PantryMapper.toResponse(
+            updatedPantry, updatedPantry.getColor(), updatedPantry.getShareInvite());
     }
 
     //Deletar despensa
@@ -61,6 +80,6 @@ public class PantryService {
     //Buscar despensa ou lançar erro 404 caso não exista
     private Pantry findPantryOrThrow(String id){
         return pantryRepository.findById(id).orElseThrow(()
-                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Despensa não encontrada com id: " + id));
+            -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Despensa não encontrada com id: " + id));
     }
 }
