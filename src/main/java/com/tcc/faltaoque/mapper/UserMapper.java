@@ -27,6 +27,7 @@ public class UserMapper {
                 .name(entity.getName())
                 .email(entity.getEmail())
                 .avatar(avatar.getId())
+                .role(entity.getRole())
                 .isActive(entity.getIsActive())
                 .build();
     }
