@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public record PantryInviteResponse(
      String id,
      String shareInvite,
+     LocalDateTime createdAt,
      LocalDateTime expiresAt
 ) {
 }

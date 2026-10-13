@@ -2,7 +2,9 @@ package com.tcc.faltaoque.mapper;
 
 import com.tcc.faltaoque.dto.response.PantryInviteResponse;
 import com.tcc.faltaoque.entity.PantryInvite;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class PantryInviteMapper {
 
     public static PantryInviteResponse toResponse(PantryInvite entity) {
