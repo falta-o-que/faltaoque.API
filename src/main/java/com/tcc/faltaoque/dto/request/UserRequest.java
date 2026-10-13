@@ -17,8 +17,6 @@ public record UserRequest(
 		@Size(min = 8, max = 64, message = "A senha deve ter entre 8 e 64 caracteres")
 		String password,
 		@NotNull(message = "Por favor, selecione um avatar")
-		int avatar,
-		boolean isActive
-
+		int avatar
 ) {
 }
