@@ -20,14 +20,14 @@ public class UserMapper {
                 .build();
     }
 
-    public static UserResponse toResponse(User response, Color avatar) {
+    public static UserResponse toResponse(User entity, Color avatar) {
         return UserResponse
                 .builder()
-                .id(response.getId())
-                .name(response.getName())
-                .email(response.getEmail())
+                .id(entity.getId())
+                .name(entity.getName())
+                .email(entity.getEmail())
                 .avatar(avatar.getId())
-                .isActive(response.getIsActive())
+                .isActive(entity.getIsActive())
                 .build();
     }
 
