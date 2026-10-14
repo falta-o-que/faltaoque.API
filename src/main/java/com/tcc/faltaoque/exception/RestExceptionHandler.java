@@ -17,9 +17,11 @@ import org.jspecify.annotations.Nullable;
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(UserNotFoundException.class)
+	@ExceptionHandler({
+		UserNotFoundException.class,
+		CategoryNotFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	private RestErrorResponse userNotFoundHandler(UserNotFoundException exception) {
+	private RestErrorResponse resourceNotFoundHandler(RuntimeException exception) {
 		return RestErrorResponse.builder()
 			.timestamp(LocalDateTime.now())
 			.status(HttpStatus.NOT_FOUND.value())
