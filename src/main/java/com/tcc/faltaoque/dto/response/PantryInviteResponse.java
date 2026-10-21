@@ -9,6 +9,7 @@ public record PantryInviteResponse(
      String id,
      String shareInvite,
      LocalDateTime createdAt,
-     LocalDateTime expiresAt
+     LocalDateTime expiresAt,
+     boolean isActive
 ) {
 }

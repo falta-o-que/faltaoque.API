@@ -25,9 +25,6 @@ public class Purchase {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(length = 8)
-    private String location;
-
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "purchase_date", nullable = false)
     private LocalDate purchaseDate;
@@ -47,6 +44,10 @@ public class Purchase {
 
     @Column(name = "qr_code_id", length = 44)
     private String qrCodeId;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
 
     @ManyToOne
     @JoinColumn(name = "pantry_id", nullable = false)

@@ -29,14 +29,15 @@ public class GroceryList {
     @Column(name = "date")
     private LocalDate date;
 
-    @Column(length = 8)
-    private String location;
-
     @Column(nullable = false)
     private Byte suggestion;
 
     @Column(name = "estimated_price", precision = 10, scale = 2)
     private BigDecimal estimatedPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
 
     @ManyToOne
     @JoinColumn(name = "pantry_id", nullable = false)

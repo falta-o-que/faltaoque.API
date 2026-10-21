@@ -33,4 +33,7 @@ public class PantryInvite {
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
 
+    @Column(name = "is_active")
+    private boolean isActive;
+
 }

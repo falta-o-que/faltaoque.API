@@ -26,7 +26,7 @@ public class Pantry {
     private String title;
 
     @Column(length = 8)
-    private String location;
+    private String cep;
 
     @ManyToOne
     @JoinColumn(name="color_id", nullable = false)

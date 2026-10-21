@@ -1,5 +1,6 @@
 package com.tcc.faltaoque.dto.response;
 
+import com.tcc.faltaoque.entity.Location;
 import lombok.Builder;
 
 import java.math.BigDecimal;

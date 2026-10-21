@@ -2,7 +2,7 @@ package com.tcc.faltaoque.dto.request;
 
 public record PantryRequest(
         String title,
-        String location,
+        String cep,
         int color,
         String shareInvite) {
 }

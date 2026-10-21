@@ -6,7 +6,7 @@ import lombok.Builder;
 public record PantryResponse(
         String id,
         String title,
-        String location,
+        String cep,
         int color,
         String shareInvite) {
 }
