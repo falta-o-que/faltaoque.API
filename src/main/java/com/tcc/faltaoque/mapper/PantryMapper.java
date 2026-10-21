@@ -14,7 +14,7 @@ public class PantryMapper {
         return Pantry
                 .builder()
                 .title(request.title())
-                .location(request.location())
+                .cep(request.cep())
                 .color(color)
                 .shareInvite(invite)
                 .build();
@@ -25,7 +25,7 @@ public class PantryMapper {
                 .builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
-                .location(entity.getLocation())
+                .cep(entity.getCep())
                 .color(color.getId())
                 .shareInvite(invite.getId())
                 .build();
