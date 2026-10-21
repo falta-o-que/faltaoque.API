@@ -16,7 +16,7 @@ CREATE TABLE users
     email     VARCHAR(254) NOT NULL UNIQUE,
     password  VARCHAR(64)  NOT NULL,
     avatar_id INT          NOT NULL,
-    role      TINYINT      NOT NULL DEFAULT 0,
+    role      TINYINT      NOT NULL DEFAULT 1,
     is_active BOOLEAN      NOT NULL DEFAULT 1,
 
     PRIMARY KEY (id),
@@ -33,6 +33,7 @@ CREATE TABLE pantries_invites
     share_invite VARCHAR(255) NOT NULL,
     created_at   DATETIME     NOT NULL,
     expires_at   DATETIME     NOT NULL,
+    is_active    BOOLEAN,
 
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -42,7 +43,7 @@ CREATE TABLE pantries
 (
     id              VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     title           VARCHAR(150) NOT NULL,
-    location        VARCHAR(8),
+    cep             VARCHAR(8),
     color_id        INT          NOT NULL,
     share_invite_id VARCHAR(36),
     PRIMARY KEY (id),
@@ -81,20 +82,37 @@ CREATE TABLE categories
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- LOCATIONS
+CREATE TABLE locations
+(
+    id          VARCHAR(36)    NOT NULL DEFAULT (UUID()),
+    local_name  VARCHAR(150)   NOT NULL,
+    custom_name VARCHAR(150),
+    cep         VARCHAR(8)     NOT NULL,
+    latitude    DECIMAL(10, 8) NOT NULL,
+    longitude   DECIMAL(11, 8) NOT NULL,
+
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- PURCHASES
 CREATE TABLE purchases
 (
     id             VARCHAR(36)    NOT NULL DEFAULT (UUID()),
     title          VARCHAR(100)   NOT NULL,
-    location       VARCHAR(8),
     purchase_date  DATE           NOT NULL,
     total_price    DECIMAL(10, 2) NOT NULL,
     total_products INT            NOT NULL,
     is_finished    BOOLEAN        NOT NULL,
     finish_date    DATE,
+    location_id    VARCHAR(36)    NOT NULL,
     qr_code_id     VARCHAR(44),
     pantry_id      VARCHAR(36)    NOT NULL,
     PRIMARY KEY (id),
+
+    CONSTRAINT fk_purchases_locations
+        FOREIGN KEY (location_id)
+            REFERENCES locations (id),
 
     CONSTRAINT fk_purchases_pantry
         FOREIGN KEY (pantry_id)
@@ -135,12 +153,16 @@ CREATE TABLE grocery_lists
     id              VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     name            VARCHAR(100) NOT NULL,
     date            DATE,
-    location        VARCHAR(8),
     suggestion      TINYINT,
     estimated_price DECIMAL(10, 2),
     pantry_id       VARCHAR(36)  NOT NULL,
     is_active       BOOLEAN      NOT NULL DEFAULT FALSE,
+    location_id     VARCHAR(36)  NOT NULL,
     PRIMARY KEY (id),
+
+    CONSTRAINT fk_grocery_lists_locations
+        FOREIGN KEY (location_id)
+            REFERENCES locations (id),
 
     CONSTRAINT fk_grocery_lists_pantry_id_pantries
         FOREIGN KEY (pantry_id)
@@ -149,13 +171,12 @@ CREATE TABLE grocery_lists
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- GROCERY_LIST_PRODUCTS
-
 CREATE TABLE grocery_list_products
 (
     id              VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     name            VARCHAR(100) NOT NULL,
     quantity        INT,
-    content_value   DOUBLE,
+    content_value DOUBLE,
     unit_of_measure TINYINT,
     is_taken        BOOLEAN      NOT NULL DEFAULT FALSE,
     grocery_list_id VARCHAR(36)  NOT NULL,

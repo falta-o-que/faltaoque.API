@@ -37,20 +37,20 @@ VALUES ('admin', 'admin@email.com', 'admin',
         (SELECT id FROM colors WHERE name = 'GREEN_01'), 0, true);
 
 -- PANTRIES INVITES
-INSERT INTO pantries_invites (share_invite, created_at, expires_at)
-VALUES ('INVITE-001', '2026-03-01 15:00:00', '2026-03-08 15:00:00'),
-       ('INVITE-002', '2026-03-02 20:30:00', '2026-03-09 20:30:00'),
-       ('INVITE-003', '2026-03-03 13:00:00', '2026-03-10 13:00:00'),
-       ('INVITE-004', '2026-03-04 13:00:00', '2026-03-11 13:00:00'),
-       ('INVITE-005', '2026-03-05 23:50:00', '2026-03-12 23:50:00'),
-       ('INVITE-006', '2026-09-05 10:00:00', '2026-09-12 10:00:00'),
-       ('INVITE-007', '2026-09-06 14:30:00', '2026-09-13 14:30:00'),
-       ('INVITE-008', '2026-09-07 09:15:00', '2026-09-14 09:15:00'),
-       ('INVITE-009', '2026-09-08 16:45:00', '2026-09-15 16:45:00'),
-       ('INVITE-010', '2026-09-09 11:20:00', '2026-09-16 11:20:00');
+INSERT INTO pantries_invites (share_invite, created_at, expires_at, is_active)
+VALUES ('INVITE-001', '2026-03-01 15:00:00', '2026-03-08 15:00:00', true),
+       ('INVITE-002', '2026-03-02 20:30:00', '2026-03-09 20:30:00', true),
+       ('INVITE-003', '2026-03-03 13:00:00', '2026-03-10 13:00:00', true),
+       ('INVITE-004', '2026-03-04 13:00:00', '2026-03-11 13:00:00', true),
+       ('INVITE-005', '2026-03-05 23:50:00', '2026-03-12 23:50:00', true),
+       ('INVITE-006', '2026-09-05 10:00:00', '2026-09-12 10:00:00', true),
+       ('INVITE-007', '2026-09-06 14:30:00', '2026-09-13 14:30:00', true),
+       ('INVITE-008', '2026-09-07 09:15:00', '2026-09-14 09:15:00', true),
+       ('INVITE-009', '2026-09-08 16:45:00', '2026-09-15 16:45:00', true),
+       ('INVITE-010', '2026-09-09 11:20:00', '2026-09-16 11:20:00', true);
 
 -- PANTRIES
-INSERT INTO pantries (title, location, color_id, share_invite_id)
+INSERT INTO pantries (title, cep, color_id, share_invite_id)
 VALUES ('Despensa Principal', '01310100',
         (SELECT id FROM colors WHERE name = 'PINK'),
         (SELECT id FROM pantries_invites WHERE share_invite = 'INVITE-001')),
@@ -124,56 +124,81 @@ VALUES ('Laticínios'),
        ('Doces e Snacks'),
        ('Higiene Pessoal');
 
+-- LOCATIONS
+INSERT INTO locations (local_name, custom_name, cep, latitude, longitude)
+VALUES ('São Paulo - Bela Vista', 'Despensa Principal', '01310100', -23.56140000, -46.65650000),
+       ('Rio de Janeiro - Copacabana', 'Casa da Praia', '22041002', -22.97110000, -43.18220000),
+       ('Belo Horizonte - Funcionários', 'Escritório da Empresa Taltal', '30140071', -19.93210000, -43.93780000),
+       ('São Paulo - Vila Olímpia', 'Sítio', '04538132', -23.59500000, -46.68500000),
+       ('Curitiba - Centro', 'Apartamento Lucas', '80010000', -25.42900000, -49.27100000),
+       ('Fortaleza - Meireles', 'Estúdio da Aninha', '60160120', -3.73190000, -38.52670000),
+       ('Porto Alegre - Centro', 'República', '90010000', -30.03280000, -51.23020000),
+       ('Brasília - Asa Sul', 'Despensinhaaa', '70040900', -15.79390000, -47.88280000),
+       ('Campinas - Centro', 'Casa de Campo', '13010000', -22.90560000, -47.06080000),
+       ('Florianópolis - Centro', 'Reserva de Emergência', '88010000', -27.59540000, -48.54800000);
+
 -- PURCHASES
-INSERT INTO purchases (title, location, purchase_date, total_price, total_products, is_finished, finish_date,
-                       qr_code_id, pantry_id)
-VALUES ('Compra do mês', '01310100', '2026-03-01', 37.20, 3,
-        true, '2026-03-25', '58392017463829104736581920473658192047365819',
-        (SELECT id FROM pantries WHERE title = 'Despensa Principal')),
-
-       ('Reposição semanal', '01310100', '2026-03-02', 80.50, 1,
-        true, '2026-03-20', '72946183027591836402951763840592716384051729',
-        (SELECT id FROM pantries WHERE title = 'Despensa Principal')),
-
-       ('Compras da praia', '22041002', '2026-03-03', 210.00, 2,
-        true, '2026-04-01', '10482736501928473650192847365019283746501928',
-        (SELECT id FROM pantries WHERE title = 'Casa da Praia')),
-
-       ('Produtos do escritório', '30140071', '2026-03-04', 45.90, 1,
-        true, '2026-03-15', '83629104758203917465029183746502918374650291',
-        (SELECT id FROM pantries WHERE title = 'Escritório da Empresa Taltal')),
-
-       ('Compra do apartamento', '80010000', '2026-03-05', 99.00, 1,
-        true, '2026-03-30', '49281736502918473650291837465029183746502918',
-        (SELECT id FROM pantries WHERE title = 'Apartamento Lucas')),
-
-       ('Reposição do estúdio', '60160120', '2026-03-06', 120.30, 1,
-        true, '2026-03-28', '67102938475620193847562019384756201938475620',
-        (SELECT id FROM pantries WHERE title = 'Estúdio da Aninha')),
-
-       ('Compra da república', '90010000', '2026-03-07', 35.00, 1,
-        true, '2026-03-18', '91827364501928374650192837465019283746501928',
-        (SELECT id FROM pantries WHERE title = 'República')),
-
-       ('Compra para a mini despensa', '70040900', '2026-03-08', 310.00, 0,
-        false, NULL, '35719204836571029384756102938475610293847561',
-        (SELECT id FROM pantries WHERE title = 'Despensinhaaa')),
-
-       ('Casa de Campo', '13010000', '2026-03-09', 67.80, 0,
-        true, '2026-03-22', '62039485710293847561029384756102938475610293',
-        (SELECT id FROM pantries WHERE title = 'Casa de Campo')),
-
-       ('Estoque de emergência', '88010000', '2026-03-10', 189.90, 0,
-        false, NULL, '84572019384650192837465019283746501928374650',
-        (SELECT id FROM pantries WHERE title = 'Reserva de Emergência')),
-
-       ('Casa de Campo', '13010000', '2026-03-07', 63.47, 3,
-        true, '2026-03-22', '27384910572638491057263849105726384910572638',
-        (SELECT id FROM pantries WHERE title = 'Casa de Campo')),
-
-       ('Compra do Sítio', '04538132', '2026-07-09', 40.00, 1,
-        true, '2026-07-25', '50918273645091827364509182736450918273645091',
-        (SELECT id FROM pantries WHERE title = 'Sítio'));
+INSERT INTO purchases (title,purchase_date, total_price, total_products, is_finished, finish_date, qr_code_id, pantry_id, location_id)
+VALUES ('Compra do mês', '2026-03-01', 37.20, 3,
+        true, '2026-03-25',
+        '58392017463829104736581920473658192047365819',
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal'),
+        (SELECT id FROM locations WHERE cep = '01310100')),
+       ('Reposição semanal', '2026-03-02', 80.50, 1,
+        true, '2026-03-20',
+        '72946183027591836402951763840592716384051729',
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal'),
+        (SELECT id FROM locations WHERE cep = '01310100')),
+       ('Compras da praia', '2026-03-03', 210.00, 2,
+        true, '2026-04-01',
+        '10482736501928473650192847365019283746501928',
+        (SELECT id FROM pantries WHERE title = 'Casa da Praia'),
+        (SELECT id FROM locations WHERE cep = '22041002')),
+       ('Produtos do escritório', '2026-03-04', 45.90, 1,
+        true, '2026-03-15',
+        '83629104758203917465029183746502918374650291',
+        (SELECT id FROM pantries WHERE title = 'Escritório da Empresa Taltal'),
+        (SELECT id FROM locations WHERE cep = '30140071')),
+       ('Compra do apartamento', '2026-03-05', 99.00, 1,
+        true, '2026-03-30',
+        '49281736502918473650291837465029183746502918',
+        (SELECT id FROM pantries WHERE title = 'Apartamento Lucas'),
+        (SELECT id FROM locations WHERE cep = '80010000')),
+       ('Reposição do estúdio', '2026-03-06', 120.30, 1,
+        true, '2026-03-28',
+        '67102938475620193847562019384756201938475620',
+        (SELECT id FROM pantries WHERE title = 'Estúdio da Aninha'),
+        (SELECT id FROM locations WHERE cep = '60160120')),
+       ('Compra da república', '2026-03-07', 35.00, 1,
+        true, '2026-03-18',
+        '91827364501928374650192837465019283746501928',
+        (SELECT id FROM pantries WHERE title = 'República'),
+        (SELECT id FROM locations WHERE cep = '90010000')),
+       ('Compra para a mini despensa', '2026-03-08', 310.00, 0,
+        false, NULL,
+        '35719204836571029384756102938475610293847561',
+        (SELECT id FROM pantries WHERE title = 'Despensinhaaa'),
+        (SELECT id FROM locations WHERE cep = '70040900')),
+       ('Casa de Campo', '2026-03-09', 67.80, 0,
+        true, '2026-03-22',
+        '62039485710293847561029384756102938475610293',
+        (SELECT id FROM pantries WHERE title = 'Casa de Campo'),
+        (SELECT id FROM locations WHERE cep = '13010000')),
+       ('Estoque de emergência', '2026-03-10', 189.90, 0,
+        false, NULL,
+        '84572019384650192837465019283746501928374650',
+        (SELECT id FROM pantries WHERE title = 'Reserva de Emergência'),
+        (SELECT id FROM locations WHERE cep = '88010000')),
+       ('Casa de Campo', '2026-03-07', 63.47, 3,
+        true, '2026-03-22',
+        '27384910572638491057263849105726384910572638',
+        (SELECT id FROM pantries WHERE title = 'Casa de Campo'),
+        (SELECT id FROM locations WHERE cep = '13010000')),
+       ('Compra do Sítio', '2026-07-09', 40.00, 1,
+        true, '2026-07-25',
+        '50918273645091827364509182736450918273645091',
+        (SELECT id FROM pantries WHERE title = 'Sítio'),
+        (SELECT id FROM locations WHERE cep = '04538132'));
 
 -- PANTRY PRODUCTS
 INSERT INTO pantry_products
@@ -294,36 +319,46 @@ VALUES ('Leite Integral 1L', 4, 4, true, 1.0,
 
 
 -- GROCERY LISTS
-INSERT INTO grocery_lists (name, date, location, suggestion, estimated_price, pantry_id, is_active)
-VALUES ('Compras de Março', '2026-03-01', '01310100', 0, 250.00,
-        (SELECT id FROM pantries WHERE title = 'Despensa Principal'), true),
+INSERT INTO grocery_lists (name, date, suggestion, estimated_price, pantry_id, is_active, location_id)
+VALUES ('Compras de Março', '2026-03-01', 0, 250.00,
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal'), true,
+        (SELECT id FROM locations WHERE cep = '01310100')),
 
-       ('Reposição Semanal', '2026-03-08', '01310100', 1, 120.00,
-        (SELECT id FROM pantries WHERE title = 'Despensa Principal'), true),
+       ('Reposição Semanal', '2026-03-08', 1, 120.00,
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal'), true,
+        (SELECT id FROM locations WHERE cep = '01310100')),
 
-       ('Churrasco Fim de Semana', '2026-03-15', '22041002', 0, 350.00,
-        (SELECT id FROM pantries WHERE title = 'Casa da Praia'), false),
+       ('Churrasco Fim de Semana', '2026-03-15', 0, 350.00,
+        (SELECT id FROM pantries WHERE title = 'Casa da Praia'), false,
+        (SELECT id FROM locations WHERE cep = '22041002')),
 
-       ('Produtos de Limpeza', '2026-03-20', '30140071', 1, 180.00,
-        (SELECT id FROM pantries WHERE title = 'Escritório da Empresa Taltal'), true),
+       ('Produtos de Limpeza', '2026-03-20', 1, 180.00,
+        (SELECT id FROM pantries WHERE title = 'Escritório da Empresa Taltal'), true,
+        (SELECT id FROM locations WHERE cep = '30140071')),
 
-       ('Feira do Mês', '2026-04-01', '01310100', 0, 200.00,
-        (SELECT id FROM pantries WHERE title = 'Despensa Principal'), true),
+       ('Feira do Mês', '2026-04-01', 0, 200.00,
+        (SELECT id FROM pantries WHERE title = 'Despensa Principal'), true,
+        (SELECT id FROM locations WHERE cep = '01310100')),
 
-       ('Bebidas e Snacks', '2026-04-05', '90010000', 0, 150.00,
-        (SELECT id FROM pantries WHERE title = 'República'), false),
+       ('Bebidas e Snacks', '2026-04-05', 0, 150.00,
+        (SELECT id FROM pantries WHERE title = 'República'), false,
+        (SELECT id FROM locations WHERE cep = '90010000')),
 
-       ('Higiene Básica', '2026-04-10', '80010000', 1, 100.00,
-        (SELECT id FROM pantries WHERE title = 'Apartamento Lucas'), true),
+       ('Higiene Básica', '2026-04-10', 1, 100.00,
+        (SELECT id FROM pantries WHERE title = 'Apartamento Lucas'), true,
+        (SELECT id FROM locations WHERE cep = '80010000')),
 
-       ('Café da Manhã', '2026-04-15', '60160120', 0, 90.00,
-        (SELECT id FROM pantries WHERE title = 'Estúdio da Aninha'), false),
+       ('Café da Manhã', '2026-04-15', 0, 90.00,
+        (SELECT id FROM pantries WHERE title = 'Estúdio da Aninha'), false,
+        (SELECT id FROM locations WHERE cep = '60160120')),
 
-       ('Lanches Rápidos', '2026-04-20', '70040900', 1, 130.00,
-        (SELECT id FROM pantries WHERE title = 'Despensinhaaa'), true),
+       ('Lanches Rápidos', '2026-04-20', 1, 130.00,
+        (SELECT id FROM pantries WHERE title = 'Despensinhaaa'), true,
+        (SELECT id FROM locations WHERE cep = '70040900')),
 
-       ('Estoque de Emergência', '2026-04-25', '88010000', 0, 400.00,
-        (SELECT id FROM pantries WHERE title = 'Reserva de Emergência'), true);
+       ('Estoque de Emergência', '2026-04-25', 0, 400.00,
+        (SELECT id FROM pantries WHERE title = 'Reserva de Emergência'), true,
+        (SELECT id FROM locations WHERE cep = '88010000'));
 
 INSERT INTO grocery_list_products
 (name, quantity, content_value, unit_of_measure, is_taken,
