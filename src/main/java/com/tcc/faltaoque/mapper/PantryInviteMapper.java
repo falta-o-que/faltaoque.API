@@ -5,11 +5,12 @@ import com.tcc.faltaoque.entity.PantryInvite;
 
 public class PantryInviteMapper {
 
-    public static PantryInviteResponse toResponse(PantryInvite entity) {
+    public static PantryInviteResponse toEntity(PantryInvite entity) {
         return PantryInviteResponse
                 .builder()
                 .id(entity.getId())
                 .shareInvite(entity.getShareInvite())
+                .createdAt(entity.getCreatedAt())
                 .expiresAt(entity.getExpiresAt())
                 .build();
     }
