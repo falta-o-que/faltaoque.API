@@ -3,10 +3,11 @@ package com.tcc.faltaoque.mapper;
 import com.tcc.faltaoque.dto.request.PantryRequest;
 import com.tcc.faltaoque.dto.response.PantryResponse;
 import com.tcc.faltaoque.entity.Pantry;
+import com.tcc.faltaoque.entity.User;
 
 public class PantryMapper {
 
-    public static Pantry toRequest(PantryRequest request) {
+    public static Pantry toRequest(PantryRequest request, User owner) {
         return Pantry
                 .builder()
                 .title(request.title())
@@ -22,6 +23,7 @@ public class PantryMapper {
                 .title(entity.getTitle())
                 .location(entity.getLocation())
                 .color(entity.getColor())
+                .shareInvite(entity.getShareInvite() == null ? null : entity.getShareInvite().getId())
                 .build();
     }
 }
