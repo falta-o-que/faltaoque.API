@@ -63,7 +63,7 @@ public class PantryService {
             .orElseThrow(() -> new ColorNotFoundException(pantryRequest.color()));
 
         pantry.setTitle(pantryRequest.title());
-        pantry.setLocation(pantryRequest.location());
+        pantry.setCep(pantryRequest.cep());
         pantry.setColor(color);
 
         Pantry updatedPantry = pantryRepository.save(pantry);
