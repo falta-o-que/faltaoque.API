@@ -1,12 +1,12 @@
 package com.tcc.faltaoque.entity;
 
+import com.tcc.faltaoque.enums.UnitOfMeasure;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -41,7 +41,7 @@ public class PantryProduct {
     private Double contentValue;
 
     @Column(name = "unit_of_measure")
-    private Byte unitOfMeasure;
+    private UnitOfMeasure unitOfMeasure;
 
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
@@ -68,4 +68,5 @@ public class PantryProduct {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
 }

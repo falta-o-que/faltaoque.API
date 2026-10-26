@@ -1,5 +1,6 @@
 package com.tcc.faltaoque.entity;
 
+import com.tcc.faltaoque.enums.UnitOfMeasure;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,7 @@ public class GroceryListProduct {
     private Double contentValue;
 
     @Column(name = "unit_of_measure")
-    private Byte unitOfMeasure;
+    private UnitOfMeasure unitOfMeasure;
 
     @Column(name = "is_taken", nullable = false)
     private boolean isTaken;
@@ -39,7 +40,5 @@ public class GroceryListProduct {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
-
 
 }

@@ -1,5 +1,6 @@
 package com.tcc.faltaoque.dto.response;
 
+import com.tcc.faltaoque.enums.UnitOfMeasure;
 import lombok.Builder;
 
 @Builder
@@ -8,9 +9,10 @@ public record GroceryListProductResponse(
         String name,
         int quantity,
         Double contentValue,
-        Byte unitOfMeasure,
+        UnitOfMeasure unitOfMeasure,
         boolean isTaken,
         String groceryList,
         int category
 ) {
+
 }

@@ -1,5 +1,6 @@
 package com.tcc.faltaoque.dto.response;
 
+import com.tcc.faltaoque.enums.UnitOfMeasure;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Builder;
@@ -12,7 +13,7 @@ public record PantryProductResponse(
         int currentQuantity,
         Boolean isInPantry,
         Double contentValue,
-        Byte unitOfMeasure,
+        UnitOfMeasure unitOfMeasure,
         BigDecimal price,
         String brand,
         LocalDate expirationDate,
