@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(
 	name = "User",
 	description = "Listar, editar e excluir usuários e listar todas as despensas de um usuário")
+@SecurityRequirement(name = "bearer-key")
 public class UserController {
 
 	private final UserService userService;
