@@ -1,5 +1,6 @@
 package com.tcc.faltaoque.dto.response;
 
+import com.tcc.faltaoque.enums.Suggestion;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Builder;
@@ -8,11 +9,12 @@ import lombok.Builder;
 public record GroceryListResponse(
         String id,
         String name,
-        Byte suggestion,
+        Suggestion suggestion,
         LocalDate date,
         String location,
         BigDecimal estimatedPrice,
         String pantry,
         boolean isActive
 ) {
+
 }

@@ -1,12 +1,12 @@
 package com.tcc.faltaoque.entity;
 
+import com.tcc.faltaoque.enums.Suggestion;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -30,7 +30,7 @@ public class GroceryList {
     private LocalDate date;
 
     @Column(nullable = false)
-    private Byte suggestion;
+    private Suggestion suggestion;
 
     @Column(name = "estimated_price", precision = 10, scale = 2)
     private BigDecimal estimatedPrice;
@@ -45,5 +45,4 @@ public class GroceryList {
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
-
 }

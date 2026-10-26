@@ -1,11 +1,12 @@
 package com.tcc.faltaoque.dto.request;
 
+import com.tcc.faltaoque.enums.Suggestion;
 import java.time.LocalDate;
 
 public record GroceryListRequest(
         String name,
         LocalDate date,
-        Byte suggestion,
+        Suggestion suggestion,
         String location,
         String pantryId) {
 }
