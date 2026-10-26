@@ -26,10 +26,11 @@ public class Pantry {
     private String title;
 
     @Column(length = 8)
-    private String location;
+    private String cep;
 
-    @Column(nullable = false)
-    private Byte color;
+    @ManyToOne
+    @JoinColumn(name="color_id", nullable = false)
+    private Color color;
 
     @OneToOne
     @JoinColumn(name = "share_invite_id")
