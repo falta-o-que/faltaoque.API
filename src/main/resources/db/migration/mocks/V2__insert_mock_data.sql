@@ -16,25 +16,25 @@ VALUES ('GREEN_01', '#97F7CD'),
 -- USERS
 INSERT INTO users (name, email, password, avatar_id, role, is_active)
 VALUES ('admin', 'admin@email.com', 'admin',
-        (SELECT id FROM colors WHERE name = 'GREEN_01'), 1, true),
+        (SELECT id FROM colors WHERE name = 'GREEN_01'), 0, true),
        ('Carlos Oliveira', 'carlos.oliveira@email.com', 'senha123',
-        (SELECT id FROM colors WHERE name = 'GREEN_02'), 0, true),
+        (SELECT id FROM colors WHERE name = 'GREEN_02'), 1, true),
        ('Mariana Santos', 'mariana.santos@email.com', 'senha123',
-        (SELECT id FROM colors WHERE name = 'GREEN_03'), 0, true),
+        (SELECT id FROM colors WHERE name = 'GREEN_03'), 1, true),
        ('Lucas Ferreira', 'lucas.ferreira@email.com', 'senha123',
-        (SELECT id FROM colors WHERE name = 'CYAN'), 0, true),
+        (SELECT id FROM colors WHERE name = 'CYAN'), 1, true),
        ('Beatriz Costa', 'beatriz.costa@email.com', 'senha123',
-        (SELECT id FROM colors WHERE name = 'PURPLE'), 0, false),
+        (SELECT id FROM colors WHERE name = 'PURPLE'), 1, false),
        ('admin2', 'admin2@email.com', 'admin',
-        (SELECT id FROM colors WHERE name = 'PURPLE'), 1, true),
+        (SELECT id FROM colors WHERE name = 'PURPLE'), 0, true),
        ('Fernanda Lima', 'fernanda.lima@email.com', 'senha123',
-        (SELECT id FROM colors WHERE name = 'RED'), 0, false),
+        (SELECT id FROM colors WHERE name = 'RED'), 1, false),
        ('Gabriel Alves', 'gabriel.alves@email.com', 'senha123',
-        (SELECT id FROM colors WHERE name = 'BLUE_02'), 0, true),
+        (SELECT id FROM colors WHERE name = 'BLUE_02'), 1, true),
        ('Juliana Rocha', 'juliana.rocha@email.com', 'senha123',
-        (SELECT id FROM colors WHERE name = 'YELLOW'), 0, false),
+        (SELECT id FROM colors WHERE name = 'YELLOW'), 1, false),
        ('Thiago Martins', 'thiago.martins@email.com', 'senha123',
-        (SELECT id FROM colors WHERE name = 'GREEN_01'), 0, true);
+        (SELECT id FROM colors WHERE name = 'GREEN_01'), 1, true);
 
 -- PANTRIES INVITES
 INSERT INTO pantries_invites (share_invite, created_at, expires_at, is_active)
