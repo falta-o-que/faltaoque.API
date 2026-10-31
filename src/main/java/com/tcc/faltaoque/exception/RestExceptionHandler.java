@@ -20,7 +20,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({
 		UserNotFoundException.class,
 		ColorNotFoundException.class,
-		PantryInviteNotFoundException.class})
+		PantryInviteNotFoundException.class,
+		PantryProductNotFoundException.class,
+		PurchaseNotFoundException.class,
+		CategoryNotFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private RestErrorResponse resourceNotFoundHandler(RuntimeException exception) {
 		return RestErrorResponse.builder()

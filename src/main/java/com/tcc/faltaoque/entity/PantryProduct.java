@@ -29,7 +29,7 @@ public class PantryProduct {
     @Builder.Default
     private int quantity = 1;
 
-    @Column(name = " current_quantity", nullable = false)
+    @Column(name = "current_quantity", nullable = false)
     @Builder.Default
     private int currentQuantity = 1;
 

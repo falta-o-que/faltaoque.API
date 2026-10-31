@@ -10,7 +10,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class PantryProductMapper {
 
-    public static PantryProduct toRequest(PantryProductRequest request, Purchase purchase, Category category) {
+    public static PantryProduct toEntity(PantryProductRequest request, Purchase purchase, Category category) {
         return PantryProduct
                 .builder()
                 .name(request.name())
@@ -26,7 +26,7 @@ public class PantryProductMapper {
                 .build();
     }
 
-    public static PantryProductResponse toEntity(PantryProduct response, Purchase purchase, Category category) {
+    public static PantryProductResponse toResponse(PantryProduct response, Purchase purchase, Category category) {
         return PantryProductResponse
                 .builder()
                 .id(response.getId())

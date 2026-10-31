@@ -31,7 +31,9 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/swagger-ui.html", "/swagger-ui/**","/v3/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
-				.requestMatchers(HttpMethod.GET, "/users", "/pantries").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET, "/users", "/pantries", "/products", "/purchases").hasRole("ADMIN")
+					.requestMatchers("/purchases/**", "/products/**")
+					.hasAnyRole("USER", "ADMIN")
 				.anyRequest().authenticated())
 			.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 			.httpBasic(Customizer.withDefaults());
