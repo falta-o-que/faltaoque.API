@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -30,13 +31,16 @@ public class Purchase {
     private LocalDate purchaseDate;
 
     @Column(name = "total_price", precision = 10, scale = 2, nullable = false)
-    private BigDecimal totalPrice;
+    @Builder.Default
+    private BigDecimal totalPrice =  BigDecimal.ZERO;
 
     @Column(name = "total_products", nullable = false)
-    private int totalProducts;
+    @Builder.Default
+    private int totalProducts = 0;
 
     @Column(name = "is_finished")
-    private boolean isFinished;
+    @Builder.Default
+    private boolean isFinished = true;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "finish_date")
@@ -52,4 +56,7 @@ public class Purchase {
     @ManyToOne
     @JoinColumn(name = "pantry_id", nullable = false)
     private Pantry pantry;
+
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.REMOVE)
+    private List<PantryProduct> products;
 }
