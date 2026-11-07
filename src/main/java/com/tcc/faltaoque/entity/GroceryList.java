@@ -1,13 +1,14 @@
 package com.tcc.faltaoque.entity;
 
+import com.tcc.faltaoque.enums.Suggestion;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -24,14 +25,24 @@ public class GroceryList {
     @Column(length = 100, nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Byte suggestion;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @Column(name = "date")
+    private LocalDate date;
 
-    @ManyToMany
-    @JoinTable(
-            name = "grocery_lists_pantry_products",
-            joinColumns = @JoinColumn(name = "grocery_list_id"),
-            inverseJoinColumns = @JoinColumn(name = "pantry_product_id")
-    )
-    private List<PantryProduct> pantryProducts = new ArrayList<>();
+    @Column(nullable = false)
+    private Suggestion suggestion;
+
+    @Column(name = "estimated_price", precision = 10, scale = 2)
+    private BigDecimal estimatedPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
+
+    @ManyToOne
+    @JoinColumn(name = "pantry_id", nullable = false)
+    private Pantry pantry;
+
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive;
 }

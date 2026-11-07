@@ -10,13 +10,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/pantries")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 public class PantryController {
 
     private final PantryService pantryService;

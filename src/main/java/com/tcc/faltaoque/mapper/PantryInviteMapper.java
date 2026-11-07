@@ -2,7 +2,9 @@ package com.tcc.faltaoque.mapper;
 
 import com.tcc.faltaoque.dto.response.PantryInviteResponse;
 import com.tcc.faltaoque.entity.PantryInvite;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class PantryInviteMapper {
 
     public static PantryInviteResponse toEntity(PantryInvite entity) {
@@ -12,6 +14,7 @@ public class PantryInviteMapper {
                 .shareInvite(entity.getShareInvite())
                 .createdAt(entity.getCreatedAt())
                 .expiresAt(entity.getExpiresAt())
+                .isActive(entity.isActive())
                 .build();
     }
 }

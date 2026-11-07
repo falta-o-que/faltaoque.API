@@ -15,12 +15,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Tag(
+	name = "User",
+	description = "Listar, editar e excluir usuários e listar todas as despensas de um usuário")
+@SecurityRequirement(name = "bearer-key")
 public class UserController {
 
 	private final UserService userService;

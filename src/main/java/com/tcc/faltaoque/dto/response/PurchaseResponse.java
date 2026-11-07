@@ -8,11 +8,14 @@ import lombok.Builder;
 @Builder
 public record PurchaseResponse(
         String id,
+        String title,
         String location,
         LocalDate purchaseDate,
         BigDecimal totalPrice,
-        Integer totalProducts,
-        LocalDate finishProducts,
+        int totalProducts,
+        boolean isFinished,
+        LocalDate finishDate,
+        String qrCodeId,
         String pantryId
 ) {
 }

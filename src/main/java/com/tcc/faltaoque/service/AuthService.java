@@ -1,12 +1,15 @@
 package com.tcc.faltaoque.service;
 
 import com.tcc.faltaoque.entity.User;
+import com.tcc.faltaoque.entity.Color;
 import com.tcc.faltaoque.repository.UserRepository;
+import com.tcc.faltaoque.repository.ColorRepository;
 import com.tcc.faltaoque.mapper.UserMapper;
 import com.tcc.faltaoque.dto.request.UserRequest;
 import com.tcc.faltaoque.dto.request.UserLoginRequest;
 import com.tcc.faltaoque.dto.response.UserResponse;
 import com.tcc.faltaoque.dto.response.TokenResponse;
+import com.tcc.faltaoque.exception.ColorNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import io.jsonwebtoken.Claims;
@@ -20,15 +23,19 @@ import lombok.RequiredArgsConstructor;
 public class AuthService {
 
 	private final UserRepository userRepository;
+	private final ColorRepository colorRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
 	private final TokenService tokenService;
 
 	public UserResponse createUser(UserRequest userRequest) {
-		User user = UserMapper.toRequest(userRequest);
+		Color color = colorRepository.findById(userRequest.avatar())
+			.orElseThrow(() -> new ColorNotFoundException(userRequest.avatar()));
+		User user = UserMapper.toEntity(userRequest, color);
+
 		user.setPassword(passwordEncoder.encode(userRequest.password()));
 		userRepository.save(user);
-		return UserMapper.toEntity(user);
+		return UserMapper.toResponse(user, user.getAvatar());
 	}
 
 	public TokenResponse login(UserLoginRequest userLoginRequest) {
@@ -49,7 +56,7 @@ public class AuthService {
 			tokenClaims.getIssuer(),
 			tokenClaims.getIssuedAt(),
 			tokenClaims.getExpiration(),
-			UserMapper.toEntity(user));
+			UserMapper.toResponse(user, user.getAvatar()));
 	}
 
 }
