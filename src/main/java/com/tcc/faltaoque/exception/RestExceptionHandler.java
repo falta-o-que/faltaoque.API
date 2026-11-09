@@ -31,6 +31,28 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 			.build();
 	}
 
+	@ExceptionHandler(ExistingEmailException.class)
+	@ResponseStatus(HttpStatus.CONFLICT)
+	private RestErrorResponse existingEmailHandler(RuntimeException exception) {
+		return RestErrorResponse.builder()
+			.timestamp(LocalDateTime.now())
+			.status(HttpStatus.CONFLICT.value())
+			.error(HttpStatus.CONFLICT.name())
+			.message(exception.getMessage())
+			.build();
+	}
+
+	@ExceptionHandler(InvalidCredentialsException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	private RestErrorResponse invalidCredentialsHandler(RuntimeException exception) {
+		return RestErrorResponse.builder()
+			.timestamp(LocalDateTime.now())
+			.status(HttpStatus.UNAUTHORIZED.value())
+			.error(HttpStatus.UNAUTHORIZED.name())
+			.message(exception.getMessage())
+			.build();
+	}
+
 	@Override
 	protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(
 	MethodArgumentNotValidException ex, HttpHeaders headers,
