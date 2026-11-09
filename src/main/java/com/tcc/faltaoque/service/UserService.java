@@ -67,6 +67,6 @@ public class UserService {
 			.orElseThrow(() -> new UserNotFoundException(id));
 
 		user.setIsActive(false);
+		userRepository.save(user);
 	}
-
 }
