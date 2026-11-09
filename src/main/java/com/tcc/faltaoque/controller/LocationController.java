@@ -55,4 +55,22 @@ public class LocationController {
 			.status(HttpStatus.CREATED)
 			.body(locationService.createLocation(locationRequest));
 	}
+
+	@Operation(summary = "Atualizar uma localização")
+	@PutMapping("/{id}")
+	public ResponseEntity<LocationResponse> updateLocation(
+	@PathVariable String id, @RequestBody @Valid LocationRequest locationRequest) {
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(locationService.updateLocation(id, locationRequest));
+	}
+
+	@Operation(summary = "Deletar uma localização")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteLocation(@PathVariable String id) {
+		locationService.deleteLocation(id);
+		return ResponseEntity
+			.status(HttpStatus.NO_CONTENT)
+			.build();
+	}
 }

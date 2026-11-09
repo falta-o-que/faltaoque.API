@@ -35,4 +35,24 @@ public class LocationService {
 		locationRepository.save(location);
 		return LocationMapper.toResponse(location);
 	}
+
+	public LocationResponse updateLocation(String id, LocationRequest locationRequest) {
+		Location location = locationRepository.findById(id)
+			.orElseThrow(() -> new LocationNotFoundException(id));
+			location.setLocalName(locationRequest.localName());
+			location.setCustomName(locationRequest.customName());
+			location.setCep(locationRequest.cep());
+			location.setLatitude(locationRequest.latitude());
+			location.setLongitude(locationRequest.longitude());
+
+		locationRepository.save(location);
+		return LocationMapper.toResponse(location);
+	}
+
+	public void deleteLocation(String id) {
+		Location location = locationRepository.findById(id)
+			.orElseThrow(() -> new LocationNotFoundException(id));
+		locationRepository.deleteById(id);
+	}
+
 }
