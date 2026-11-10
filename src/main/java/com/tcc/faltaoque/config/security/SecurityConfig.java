@@ -32,6 +32,9 @@ public class SecurityConfig {
 				.requestMatchers("/swagger-ui.html", "/swagger-ui/**","/v3/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
 				.requestMatchers(HttpMethod.GET, "/users", "/pantries").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.POST, "/colors").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.PUT, "/colors/*").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.DELETE, "/colors/*").hasRole("ADMIN")
 				.anyRequest().authenticated())
 			.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 			.httpBasic(Customizer.withDefaults());
