@@ -145,7 +145,6 @@ CREATE TABLE pantry_products
     CONSTRAINT fk_pantry_products_category
         FOREIGN KEY (category_id)
             REFERENCES categories (id)
-                ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- GROCERY LISTS
@@ -193,7 +192,6 @@ CREATE TABLE grocery_list_products
     CONSTRAINT fk_grocery_list_products_category_id_categories
         FOREIGN KEY (category_id)
             REFERENCES categories (id)
-                ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
