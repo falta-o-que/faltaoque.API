@@ -46,14 +46,14 @@ public class PantryInviteService {
         pantry.setShareInvite(invite);
         pantryRepository.save(pantry);
 
-        return PantryInviteMapper.toEntity(invite);
+        return PantryInviteMapper.toResponse(invite);
     }
 
     //Listar todos os convites
     public List<PantryInviteResponse> listAllInvites(){
         return pantryInviteRepository.findAll()
                 .stream()
-                .map(PantryInviteMapper::toEntity)
+                .map(PantryInviteMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -61,7 +61,7 @@ public class PantryInviteService {
     public PantryInviteResponse findInviteById(String id, String userEmail){
         PantryInvite invite = findInviteOrThrow(id);
         findPantryOfInviteOrThrow(invite, userEmail);
-        return PantryInviteMapper.toEntity(invite);
+        return PantryInviteMapper.toResponse(invite);
     }
 
 
@@ -81,14 +81,14 @@ public class PantryInviteService {
         User user = pantryService.findUserOrThrow(userEmail);
 
         PantryInvite invite = pantryInviteRepository.findByShareInvite(shareInvite).orElseThrow(()
-                -> new PantryInviteNotFoundException("Convite não encontrado para o link informado."));
+                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Convite não encontrado para o link informado."));
 
-        if (invite.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new ResponseStatusException(HttpStatus.GONE, "O convite expirou.");
+        if (!invite.isActive() || invite.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.GONE, "O convite não está mais ativo ou expirou.");
         }
 
         Pantry pantry = pantryRepository.findFirstByShareInvite_Id(invite.getId()).orElseThrow(()
-                -> new PantryInviteNotFoundException("Convite não encontrado para o link informado."));
+                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Convite não encontrado para o link informado."));
 
         if (pantryRepository.existsByIdAndUsers_Email(pantry.getId(), userEmail)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Você já participa desta despensa.");
@@ -97,7 +97,7 @@ public class PantryInviteService {
         user.getPantries().add(pantry);
         userRepository.save(user);
 
-        return PantryMapper.toEntity(pantry);
+        return PantryMapper.toResponse(pantry, pantry.getColor(), pantry.getShareInvite());
     }
 
     //Remover, de hora em hora, os convites expirados
@@ -112,13 +112,13 @@ public class PantryInviteService {
     //Buscar convite ou lançar erro 404 caso não exista
     private PantryInvite findInviteOrThrow(String id){
         return pantryInviteRepository.findById(id).orElseThrow(()
-                -> new PantryInviteNotFoundException("Convite não encontrado com o id: " + id));
+                -> new PantryInviteNotFoundException(id));
     }
 
     //Buscar a despensa do convite (404 sem despensa, 403 se não for convidado)
     private Pantry findPantryOfInviteOrThrow(PantryInvite invite, String userEmail){
         Pantry pantry = pantryRepository.findFirstByShareInvite_Id(invite.getId()).orElseThrow(()
-                -> new PantryInviteNotFoundException("Convite não encontrado com o id: " + invite.getId()));
+                -> new PantryInviteNotFoundException(invite.getId()));
         return pantryService.findPantryForUserOrThrow(pantry.getId(), userEmail);
     }
 }
