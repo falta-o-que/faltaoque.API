@@ -7,7 +7,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class PantryInviteMapper {
 
-    public static PantryInviteResponse toEntity(PantryInvite entity) {
+    public static PantryInviteResponse toResponse(PantryInvite entity) {
         return PantryInviteResponse
                 .builder()
                 .id(entity.getId())
