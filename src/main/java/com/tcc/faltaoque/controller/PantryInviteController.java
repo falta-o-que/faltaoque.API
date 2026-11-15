@@ -5,6 +5,7 @@ import com.tcc.faltaoque.dto.response.PantryInviteResponse;
 import com.tcc.faltaoque.dto.response.PantryResponse;
 import com.tcc.faltaoque.service.PantryInviteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/pantries-invites")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 public class PantryInviteController {
 
     private final PantryInviteService pantryInviteService;
