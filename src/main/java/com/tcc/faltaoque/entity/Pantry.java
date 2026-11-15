@@ -23,10 +23,11 @@ public class Pantry {
     private String title;
 
     @Column(length = 8)
-    private String location;
+    private String cep;
 
-    @Column(nullable = false)
-    private Byte color; //atualizar para classe depois que for feita a entidade Color
+    @ManyToOne
+    @JoinColumn(name = "color_id", nullable = false)
+    private Color color;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -40,15 +41,6 @@ public class Pantry {
     @ManyToMany(mappedBy = "pantries")
     @Builder.Default
     private List<User> users = new ArrayList<>();
-
-
-    //Ao excluir a despensa, as compras e as listas de compras são excluídas junto
-    @JsonIgnore
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "pantry", cascade = CascadeType.REMOVE)
-    @Builder.Default
-    private List<UserPantry> userPantries = new ArrayList<>();
 
     @JsonIgnore
     @ToString.Exclude
