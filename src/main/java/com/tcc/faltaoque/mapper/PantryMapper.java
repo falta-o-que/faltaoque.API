@@ -10,13 +10,12 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class PantryMapper {
 
-    public static Pantry toEntity(PantryRequest request, Color color, PantryInvite invite) {
+    public static Pantry toEntity(PantryRequest request, Color color) {
         return Pantry
                 .builder()
                 .title(request.title())
                 .cep(request.cep())
                 .color(color)
-                .shareInvite(invite)
                 .build();
     }
 
@@ -27,7 +26,7 @@ public class PantryMapper {
                 .title(entity.getTitle())
                 .cep(entity.getCep())
                 .color(color.getId())
-                .shareInvite(invite.getId())
+                .shareInvite(invite == null ? null : invite.getId())
                 .build();
     }
 }

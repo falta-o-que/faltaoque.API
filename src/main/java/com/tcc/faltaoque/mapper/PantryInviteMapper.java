@@ -12,6 +12,7 @@ public class PantryInviteMapper {
                 .builder()
                 .id(entity.getId())
                 .shareInvite(entity.getShareInvite())
+                .createdAt(entity.getCreatedAt())
                 .expiresAt(entity.getExpiresAt())
                 .isActive(entity.isActive())
                 .build();
