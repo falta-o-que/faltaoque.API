@@ -4,16 +4,16 @@ import com.tcc.faltaoque.dto.request.PantryRequest;
 import com.tcc.faltaoque.dto.response.PantryResponse;
 import com.tcc.faltaoque.entity.Pantry;
 import com.tcc.faltaoque.entity.Color;
-import com.tcc.faltaoque.entity.PantryInvite;
+import com.tcc.faltaoque.entity.User;
 import com.tcc.faltaoque.mapper.PantryMapper;
 import com.tcc.faltaoque.repository.PantryRepository;
 import com.tcc.faltaoque.repository.ColorRepository;
-import com.tcc.faltaoque.repository.PantryInviteRepository;
 import com.tcc.faltaoque.exception.ColorNotFoundException;
-import com.tcc.faltaoque.exception.PantryInviteNotFoundException;
+import com.tcc.faltaoque.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -25,20 +25,22 @@ public class PantryService {
 
     private final PantryRepository pantryRepository;
     private final ColorRepository colorRepository;
-    private final PantryInviteRepository pantryInviteRepository;
+    private final UserRepository userRepository;
+
 
     //Criar despensa
-    public PantryResponse createPantry(PantryRequest pantryRequest){
-        Color color = colorRepository.findById(pantryRequest.color())
-            .orElseThrow(() -> new ColorNotFoundException(pantryRequest.color()));
-        PantryInvite pantryInvite = pantryInviteRepository.findById(pantryRequest.shareInvite())
-            .orElseThrow(() -> new PantryInviteNotFoundException(pantryRequest.shareInvite()));
+    @Transactional
+    public PantryResponse createPantry(PantryRequest pantryRequest, String userEmail){
+        User user = findUserOrThrow(userEmail);
+        Color color = findColorOrThrow(pantryRequest.color());
 
-        Pantry pantry = PantryMapper.toEntity(pantryRequest, color, pantryInvite);
-        Pantry savedPantry = pantryRepository.save(pantry);
+        Pantry pantry = pantryRepository.save(PantryMapper.toEntity(pantryRequest, color));
+        user.getPantries().add(pantry);
+        pantry.getUsers().add(user);
+        userRepository.save(user);
 
         return PantryMapper.toResponse(
-            savedPantry, savedPantry.getColor(), savedPantry.getShareInvite());
+            pantry, pantry.getColor(), pantry.getShareInvite());
     }
 
     //Listar todas as despensas
@@ -51,16 +53,15 @@ public class PantryService {
     }
 
     //Buscar por id
-    public PantryResponse findPantryById(String id){
-        Pantry pantry = findPantryOrThrow(id);
+    public PantryResponse findPantryById(String id, String userEmail){
+        Pantry pantry = findPantryForUserOrThrow(id, userEmail);
         return PantryMapper.toResponse(pantry, pantry.getColor(), pantry.getShareInvite());
     }
 
     //Editar despensa
-    public PantryResponse updatePantry(String id, PantryRequest pantryRequest){
-        Pantry pantry = findPantryOrThrow(id);
-        Color color = colorRepository.findById(pantryRequest.color())
-            .orElseThrow(() -> new ColorNotFoundException(pantryRequest.color()));
+    public PantryResponse updatePantry(String id, PantryRequest pantryRequest, String userEmail){
+        Pantry pantry = findPantryForUserOrThrow(id, userEmail);
+        Color color = findColorOrThrow(pantryRequest.color());
 
         pantry.setTitle(pantryRequest.title());
         pantry.setCep(pantryRequest.cep());
@@ -72,8 +73,12 @@ public class PantryService {
     }
 
     //Deletar despensa
-    public void deletePantry(String id){
-        Pantry pantry = findPantryOrThrow(id);
+    @Transactional
+    public void deletePantry(String id, String userEmail){
+        Pantry pantry = findPantryForUserOrThrow(id, userEmail);
+
+        //Remove o vínculo com os usuários (users_pantries) antes de excluir a despensa
+        pantry.getUsers().forEach(user -> user.getPantries().removeIf(p -> p.getId().equals(id)));
         pantryRepository.delete(pantry);
     }
 
@@ -81,5 +86,27 @@ public class PantryService {
     private Pantry findPantryOrThrow(String id){
         return pantryRepository.findById(id).orElseThrow(()
             -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Despensa não encontrada com id: " + id));
+    }
+
+    //Buscar despensa ou lançar erro 404 caso não exista e 403 caso o usuário não participe dela
+    Pantry findPantryForUserOrThrow(String id, String userEmail){
+        Pantry pantry = findPantryOrThrow(id);
+
+        if (!pantryRepository.existsByIdAndUsers_Email(id, userEmail)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não participa desta despensa.");
+        }
+        return pantry;
+    }
+
+    //Buscar usuário pelo e-mail ou lançar erro 404 caso não exista
+    User findUserOrThrow(String userEmail){
+        return userRepository.findByEmail(userEmail).orElseThrow(()
+                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
+    }
+
+    //Buscar cor pelo id ou lançar erro 404 caso não exista
+    private Color findColorOrThrow(int id){
+        return colorRepository.findById(id).orElseThrow(()
+                -> new ColorNotFoundException(id));
     }
 }
