@@ -2,7 +2,6 @@ package com.tcc.faltaoque.dto.response;
 
 import lombok.Builder;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
