@@ -13,8 +13,6 @@ public record PurchaseRequest(
         @Size(max = 36, message = "O UUID deve possuir 36 caracteres")
         String location,
         LocalDate purchaseDate,
-        boolean isFinished,
-        LocalDate finishDate,
         String qrCodeId,
         @NotBlank(message = "A compra deve estar associada à uma despensa")
         @Size(max = 36, message = "O UUID deve possuir 36 caracteres")
