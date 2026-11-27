@@ -1,12 +1,14 @@
 package com.tcc.faltaoque.service;
 
 import com.tcc.faltaoque.dto.request.PurchaseRequest;
+import com.tcc.faltaoque.dto.response.PantryProductResponse;
 import com.tcc.faltaoque.dto.response.PurchaseResponse;
 import com.tcc.faltaoque.entity.Location;
 import com.tcc.faltaoque.entity.Pantry;
 import com.tcc.faltaoque.entity.PantryProduct;
 import com.tcc.faltaoque.entity.Purchase;
 import com.tcc.faltaoque.exception.*;
+import com.tcc.faltaoque.mapper.PantryProductMapper;
 import com.tcc.faltaoque.mapper.PurchaseMapper;
 import com.tcc.faltaoque.repository.LocationRepository;
 import com.tcc.faltaoque.repository.PantryProductRepository;
@@ -52,6 +54,12 @@ public class PurchaseService {
 
     //Criar nova compra
     public PurchaseResponse createPurchase(PurchaseRequest purchaseRequest) {
+        String qrCodeId = purchaseRequest.qrCodeId();
+
+        if (qrCodeId != null && purchaseRepository.findByQrCodeId(qrCodeId).isPresent()) {
+            throw new AlreadyExistingPurchaseException(qrCodeId);
+        }
+
         Location location = locationRepository.findById(purchaseRequest.location())
                 .orElseThrow(() -> new LocationNotFoundException(purchaseRequest.location()));
 
@@ -67,37 +75,33 @@ public class PurchaseService {
 
     //Editar compra
     public PurchaseResponse purchaseUpdate(String id, PurchaseRequest purchaseRequest) {
-        return purchaseRepository.findById(id)
-                .map(existing -> locationRepository.findById(purchaseRequest.location())
-                        .map(location -> pantryRepository.findById(purchaseRequest.pantryId())
-                                .map(pantry -> {
-                                    Purchase purchaseToUpdate = PurchaseMapper.toEntity(
-                                            purchaseRequest, location, pantry
-                                    );
+      Purchase purchase = purchaseRepository.findById(id)
+              .orElseThrow(() -> new PurchaseNotFoundException(id));
 
-                                    purchaseToUpdate.setId(existing.getId());
+      Location location = locationRepository.findById(purchaseRequest.location())
+              .orElseThrow(() -> new LocationNotFoundException(purchaseRequest.location()));
 
-                                    Purchase updatedPurchase =
-                                            purchaseRepository.save(purchaseToUpdate);
+      Pantry pantry = pantryRepository.findById(purchaseRequest.pantryId())
+              .orElseThrow(() -> new PantryNotFoundException(purchaseRequest.pantryId()));
 
-                                    return PurchaseMapper.toResponse(
-                                            updatedPurchase,
-                                            updatedPurchase.getLocation(),
-                                            updatedPurchase.getPantry()
-                                    );
-                                })
-                                .orElseThrow(() -> new PantryProductNotFoundException(purchaseRequest.pantryId())))
-                        .orElseThrow(() -> new LocationNotFoundException(purchaseRequest.location())))
-                .orElseThrow(() -> new PurchaseNotFoundException(id));
+      PurchaseMapper.updateEntity(purchase, purchaseRequest);
+
+      purchase.setLocation(location);
+      purchase.setPantry(pantry);
+
+      purchaseRepository.save(purchase);
+
+      return PurchaseMapper.toResponse(purchase,location, pantry);
+
+
     }
 
     //Deletar compra
-    public Purchase deleteById(String id) {
+    public void deleteById(String id) {
         purchaseRepository.findById(id)
                 .orElseThrow(() -> new PurchaseNotFoundException(id));
 
         purchaseRepository.deleteById(id);
-        return null;
     }
 
     //Listar compra por id
@@ -122,17 +126,16 @@ public class PurchaseService {
                 .toList();
     }
 
-    //Listar compras de uma despensa com seus produtos
-    public List<PurchaseResponse> listProductsByPurchase(String pantryId) {
-        pantryRepository.findById(pantryId)
-                .orElseThrow(() -> new PantryNotFoundException(pantryId));
+    public List<PantryProductResponse> listProductsByPurchase(String purchaseId) {
+        Purchase purchase = purchaseRepository.findById(purchaseId)
+                .orElseThrow(() -> new PurchaseNotFoundException(purchaseId));
 
-        return purchaseRepository.findByPantryId(pantryId)
+        return pantryProductRepository.findByPurchaseId(purchase.getId())
                 .stream()
-                .map(purchase -> PurchaseMapper.toResponse(
-                        purchase,
-                        purchase.getLocation(),
-                        purchase.getPantry()
+                .map(product -> PantryProductMapper.toResponse(
+                        product,
+                        product.getPurchase(),
+                        product.getCategory()
                 ))
                 .toList();
     }

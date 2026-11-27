@@ -1,14 +1,12 @@
 package com.tcc.faltaoque.service;
 
 import com.tcc.faltaoque.dto.request.PantryProductRequest;
+import com.tcc.faltaoque.dto.response.PantryProductDeleteResponse;
 import com.tcc.faltaoque.dto.response.PantryProductResponse;
 import com.tcc.faltaoque.entity.Category;
 import com.tcc.faltaoque.entity.PantryProduct;
 import com.tcc.faltaoque.entity.Purchase;
-import com.tcc.faltaoque.exception.CategoryNotFoundException;
-import com.tcc.faltaoque.exception.PantryInviteNotFoundException;
-import com.tcc.faltaoque.exception.PantryProductNotFoundException;
-import com.tcc.faltaoque.exception.PurchaseNotFoundException;
+import com.tcc.faltaoque.exception.*;
 import com.tcc.faltaoque.mapper.PantryProductMapper;
 import com.tcc.faltaoque.repository.CategoryRepository;
 import com.tcc.faltaoque.repository.PantryProductRepository;
@@ -51,41 +49,40 @@ public class PantryProductService {
 
     //Editar produto
     public PantryProductResponse productUpdate(String id, PantryProductRequest pantryProductRequest) {
-        return pantryProductRepository.findById(id)
-                .map(existing -> purchaseRepository.findById(pantryProductRequest.purchase())
-                        .map(purchase -> categoryRepository.findById(pantryProductRequest.category())
-                                .map(category -> {
-                                    PantryProduct pantryProductToUpdate = PantryProductMapper.toEntity(
-                                            pantryProductRequest, purchase, category
-                                    );
+        PantryProduct product = pantryProductRepository.findById(id)
+                .orElseThrow(() -> new PantryProductNotFoundException(id));
 
-                                    pantryProductToUpdate.setId(existing.getId());
+        Purchase purchase = purchaseRepository.findById(pantryProductRequest.purchase())
+                .orElseThrow(() -> new PurchaseNotFoundException(pantryProductRequest.purchase()));
 
-                                    PantryProduct updatedPantryProduct =
-                                            pantryProductRepository.save(pantryProductToUpdate);
+        Category category = categoryRepository.findById(pantryProductRequest.category())
+                .orElseThrow(() -> new CategoryNotFoundException(pantryProductRequest.category()));
 
-                                    purchaseService.updatePurchaseTotals(updatedPantryProduct.getPurchase().getId());
+        PantryProductMapper.updateEntity(product, pantryProductRequest);
 
-                                    return PantryProductMapper.toResponse(
-                                            updatedPantryProduct,
-                                            updatedPantryProduct.getPurchase(),
-                                            updatedPantryProduct.getCategory()
-                                    );
+        product.setPurchase(purchase);
+        product.setCategory(category);
 
-                                }).orElseThrow(() -> new CategoryNotFoundException(pantryProductRequest.category())))
-                        .orElseThrow(() -> new PurchaseNotFoundException(pantryProductRequest.purchase())))
-                .orElseThrow(() -> new PantryInviteNotFoundException(id));
+        pantryProductRepository.save(product);
+
+        purchaseService.updatePurchaseTotals(purchase.getId());
+
+        return PantryProductMapper.toResponse(product, purchase, category);
     }
 
-    //Deletar produto de uma compra
-    public void deleteProductByPurchase(String purchaseId, String productId) {
+    //Deletar produto
+    public PantryProductDeleteResponse deletePurchaseProduct(String productId) {
         PantryProduct product = pantryProductRepository
-                .findByIdAndPurchaseId(productId, purchaseId)
-                .orElseThrow(() -> new PurchaseNotFoundException(purchaseId));
+                .findById(productId)
+                        .orElseThrow(() -> new PantryProductNotFoundException(productId));
 
-        pantryProductRepository.delete(product);
+        product.setDeleted(true);
+
+        pantryProductRepository.save(product);
 
         purchaseService.updatePurchaseTotals(product.getPurchase().getId());
+
+        return PantryProductMapper.pantryProductDeleteResponse(product);
     }
 
     //Listar produto por id
@@ -111,21 +108,6 @@ public class PantryProductService {
                 .toList();
     }
 
-    //Listar produtos de uma compra
-    public List<PantryProductResponse> listProductsByPurchase(String purchaseId) {
-        purchaseRepository.findById(purchaseId)
-                .orElseThrow(() -> new PurchaseNotFoundException(purchaseId));
-
-        return pantryProductRepository.findByPurchaseId(purchaseId)
-                .stream()
-                .map(purchaseProduct -> PantryProductMapper.toResponse(
-                        purchaseProduct,
-                        purchaseProduct.getPurchase(),
-                        purchaseProduct.getCategory()
-                ))
-                .toList();
-    }
-
     //Listar produtos por categoria
     public List<PantryProductResponse> listProductsByPurchaseAndCategory(String purchaseId, int categoryId) {
         purchaseRepository.findById(purchaseId)
@@ -133,6 +115,13 @@ public class PantryProductService {
 
         categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
+
+        List<PantryProduct> products =
+                pantryProductRepository.findByPurchaseIdAndCategoryId(purchaseId, categoryId);
+
+        if (products.isEmpty()) {
+            throw new ProductCategoryNotFoundException(categoryId);
+        }
 
         return pantryProductRepository
                 .findByPurchaseIdAndCategoryId(purchaseId, categoryId)
@@ -148,6 +137,13 @@ public class PantryProductService {
     public List<PantryProductResponse> filterByName(String purchaseId, String name) {
         purchaseRepository.findById(purchaseId)
                 .orElseThrow(() -> new PurchaseNotFoundException(purchaseId));
+
+        List<PantryProduct> products =
+                pantryProductRepository.findByPurchaseIdAndName(purchaseId, name);
+
+        if (products.isEmpty()) {
+            throw new ProductNameNotFoundException(name);
+        }
 
         return pantryProductRepository
                 .findByPurchaseIdAndName(purchaseId, name)
