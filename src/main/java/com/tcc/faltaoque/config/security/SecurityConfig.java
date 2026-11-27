@@ -31,7 +31,10 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/swagger-ui.html", "/swagger-ui/**","/v3/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
-				.requestMatchers(HttpMethod.GET, "/users", "/pantries").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET, "/users", "/pantries", "/locations").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.PUT, "/categories/*").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.DELETE, "/categories/*").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.POST, "/colors").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.PUT, "/colors/*").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/colors/*").hasRole("ADMIN")
