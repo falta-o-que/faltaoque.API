@@ -20,7 +20,7 @@ public class PantryInvite {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "share_invite", length = 255, nullable = false)
+    @Column(name = "share_invite")
     private String shareInvite;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
