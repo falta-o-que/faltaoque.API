@@ -1,6 +1,7 @@
 package com.tcc.faltaoque.mapper;
 
 import com.tcc.faltaoque.dto.request.PantryProductRequest;
+import com.tcc.faltaoque.dto.response.PantryProductDeleteResponse;
 import com.tcc.faltaoque.dto.response.PantryProductResponse;
 import com.tcc.faltaoque.entity.Category;
 import com.tcc.faltaoque.entity.PantryProduct;
@@ -10,7 +11,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class PantryProductMapper {
 
-    public static PantryProduct toRequest(PantryProductRequest request, Purchase purchase, Category category) {
+    public static PantryProduct toEntity(PantryProductRequest request, Purchase purchase, Category category) {
         return PantryProduct
                 .builder()
                 .name(request.name())
@@ -26,7 +27,7 @@ public class PantryProductMapper {
                 .build();
     }
 
-    public static PantryProductResponse toEntity(PantryProduct response, Purchase purchase, Category category) {
+    public static PantryProductResponse toResponse(PantryProduct response, Purchase purchase, Category category) {
         return PantryProductResponse
                 .builder()
                 .id(response.getId())
@@ -43,6 +44,23 @@ public class PantryProductMapper {
                 .purchase(purchase.getId())
                 .category(category.getId())
                 .build();
+    }
+
+    public static void updateEntity (PantryProduct product, PantryProductRequest request) {
+        product.setName(request.name());
+        product.setQuantity(request.quantity());
+        product.setCurrentQuantity(request.quantity());
+        product.setContentValue(request.contentValue());
+        product.setUnitOfMeasure(request.unitOfMeasure());
+        product.setPrice(request.price());
+        product.setBrand(request.brand());
+        product.setExpirationDate(request.expirationDate());
+    }
+
+    public static PantryProductDeleteResponse pantryProductDeleteResponse(PantryProduct response) {
+        return new PantryProductDeleteResponse(
+                response.isDeleted()
+        );
     }
 
 }

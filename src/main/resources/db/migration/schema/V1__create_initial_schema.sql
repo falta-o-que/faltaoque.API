@@ -30,7 +30,7 @@ CREATE TABLE users
 CREATE TABLE pantries_invites
 (
     id           VARCHAR(36)  NOT NULL DEFAULT (UUID()),
-    share_invite VARCHAR(255) NOT NULL,
+    share_invite VARCHAR(255),
     created_at   DATETIME     NOT NULL,
     expires_at   DATETIME     NOT NULL,
     is_active    BOOLEAN,
@@ -101,9 +101,9 @@ CREATE TABLE purchases
     id             VARCHAR(36)    NOT NULL DEFAULT (UUID()),
     title          VARCHAR(100)   NOT NULL,
     purchase_date  DATE           NOT NULL,
-    total_price    DECIMAL(10, 2) NOT NULL,
-    total_products INT            NOT NULL,
-    is_finished    BOOLEAN        NOT NULL,
+    total_price    DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    total_products INT            NOT NULL DEFAULT 0,
+    is_finished    BOOLEAN        NOT NULL DEFAULT FALSE,
     finish_date    DATE,
     location_id    VARCHAR(36)    NOT NULL,
     qr_code_id     VARCHAR(44),
@@ -140,7 +140,8 @@ CREATE TABLE pantry_products
 
     CONSTRAINT fk_pantry_products_purchase
         FOREIGN KEY (purchase_id)
-            REFERENCES purchases (id),
+            REFERENCES purchases (id)
+            ON DELETE CASCADE,
 
     CONSTRAINT fk_pantry_products_category
         FOREIGN KEY (category_id)

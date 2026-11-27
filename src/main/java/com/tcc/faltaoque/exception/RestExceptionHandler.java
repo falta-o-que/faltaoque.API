@@ -21,8 +21,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		UserNotFoundException.class,
 		ColorNotFoundException.class,
 		PantryInviteNotFoundException.class,
+		PantryProductNotFoundException.class,
+		PurchaseNotFoundException.class,
 		LocationNotFoundException.class,
-		CategoryNotFoundException.class})
+		PantryNotFoundException.class,
+		CategoryNotFoundException.class,
+		ProductNameNotFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private RestErrorResponse resourceNotFoundHandler(RuntimeException exception) {
 		return RestErrorResponse.builder()
@@ -33,7 +37,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 			.build();
 	}
 
-	@ExceptionHandler(ExistingEmailException.class)
+	@ExceptionHandler({
+		ExistingEmailException.class,
+		AlreadyExistingPurchaseException.class})
 	@ResponseStatus(HttpStatus.CONFLICT)
 	private RestErrorResponse existingEmailHandler(RuntimeException exception) {
 		return RestErrorResponse.builder()
