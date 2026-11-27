@@ -25,13 +25,39 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		PurchaseNotFoundException.class,
 		LocationNotFoundException.class,
 		PantryNotFoundException.class,
-		CategoryNotFoundException.class})
+		CategoryNotFoundException.class,
+		ProductNameNotFoundException.class,
+		AlreadyExistingPurchaseException.class
+
+	})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private RestErrorResponse resourceNotFoundHandler(RuntimeException exception) {
 		return RestErrorResponse.builder()
 			.timestamp(LocalDateTime.now())
 			.status(HttpStatus.NOT_FOUND.value())
 			.error(HttpStatus.NOT_FOUND.name())
+			.message(exception.getMessage())
+			.build();
+	}
+
+	@ExceptionHandler(ExistingEmailException.class)
+	@ResponseStatus(HttpStatus.CONFLICT)
+	private RestErrorResponse existingEmailHandler(RuntimeException exception) {
+		return RestErrorResponse.builder()
+			.timestamp(LocalDateTime.now())
+			.status(HttpStatus.CONFLICT.value())
+			.error(HttpStatus.CONFLICT.name())
+			.message(exception.getMessage())
+			.build();
+	}
+
+	@ExceptionHandler(InvalidCredentialsException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	private RestErrorResponse invalidCredentialsHandler(RuntimeException exception) {
+		return RestErrorResponse.builder()
+			.timestamp(LocalDateTime.now())
+			.status(HttpStatus.UNAUTHORIZED.value())
+			.error(HttpStatus.UNAUTHORIZED.name())
 			.message(exception.getMessage())
 			.build();
 	}

@@ -66,7 +66,7 @@ public class UserService {
 		User user = userRepository.findById(id)
 			.orElseThrow(() -> new UserNotFoundException(id));
 
-		userRepository.deleteById(id);
+		user.setIsActive(false);
+		userRepository.save(user);
 	}
-
 }
