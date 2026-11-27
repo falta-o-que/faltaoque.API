@@ -36,4 +36,10 @@ public class PurchaseMapper {
                 .pantryId(pantry.getId())
                 .build();
     }
+
+    public static void updateEntity (Purchase purchase, PurchaseRequest request){
+        purchase.setTitle(request.title());
+        purchase.setPurchaseDate(request.purchaseDate());
+        purchase.setQrCodeId(String.valueOf(request.purchaseDate()));
+    }
 }
