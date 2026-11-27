@@ -1,6 +1,7 @@
 package com.tcc.faltaoque.controller;
 
 import com.tcc.faltaoque.dto.request.PurchaseRequest;
+import com.tcc.faltaoque.dto.response.PantryProductResponse;
 import com.tcc.faltaoque.dto.response.PurchaseResponse;
 import com.tcc.faltaoque.service.PurchaseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,10 +35,8 @@ public class PurchaseController {
 
     @Operation(summary = "Editar compra")
     @PutMapping("/{id}")
-    public ResponseEntity<PurchaseResponse> editPurchase (@PathVariable String id, @RequestBody PurchaseRequest purchaseRequest ){
-        PurchaseResponse purchase = purchaseService.purchaseUpdate(id, purchaseRequest);
-
-        return ResponseEntity.ok(purchase);
+    public ResponseEntity<PurchaseResponse> editPurchase (@PathVariable String id, @Valid @RequestBody PurchaseRequest purchaseRequest ){
+        return ResponseEntity.ok(purchaseService.purchaseUpdate(id, purchaseRequest));
     }
 
     @Operation(summary = "Deletar compra")
@@ -60,13 +59,13 @@ public class PurchaseController {
         return ResponseEntity.ok(purchaseService.listAllPurchases());
     }
 
-    @Operation(summary = "Listar compras de uma despensa com seus produtos")
-    @GetMapping("/pantry/{pantryId}")
-    public ResponseEntity<List<PurchaseResponse>> listProductsByPurchase(
-            @PathVariable String pantryId) {
+    @Operation(summary = "Listar produtos de uma compra")
+    @GetMapping("/{purchaseId}/products")
+    public ResponseEntity<List<PantryProductResponse>> listProducts(
+            @PathVariable String purchaseId) {
 
         return ResponseEntity.ok(
-                purchaseService.listProductsByPurchase(pantryId)
+                purchaseService.listProductsByPurchase(purchaseId)
         );
     }
 
