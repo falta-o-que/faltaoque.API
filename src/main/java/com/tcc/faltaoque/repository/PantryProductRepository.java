@@ -16,6 +16,4 @@ public interface PantryProductRepository extends JpaRepository<PantryProduct, St
 
     List<PantryProduct> findByPurchaseIdAndName(String purchaseId, String name);
 
-    Optional<PantryProduct> findByIdAndPurchaseId(String id, String purchaseId);
-
 }
