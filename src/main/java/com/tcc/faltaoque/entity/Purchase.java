@@ -40,7 +40,7 @@ public class Purchase {
 
     @Column(name = "is_finished")
     @Builder.Default
-    private boolean isFinished = true;
+    private boolean isFinished = false;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "finish_date")
