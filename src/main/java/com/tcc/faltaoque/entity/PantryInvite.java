@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -29,11 +28,15 @@ public class PantryInvite {
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    //o link expira 12 horas depois de criado
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @Column(name = "expires_at", nullable = false)
-    private LocalDateTime expiresAt;
+    @Builder.Default
+    private LocalDateTime expiresAt = LocalDateTime.now().plusHours(12);
 
     @Column(name = "is_active")
-    private boolean isActive;
+    @Builder.Default
+    private boolean isActive = true;
+
 
 }
