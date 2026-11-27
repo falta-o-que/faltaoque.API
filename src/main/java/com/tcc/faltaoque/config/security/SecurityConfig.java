@@ -35,6 +35,9 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.PUT, "/categories/*").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/categories/*").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.POST, "/colors").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.PUT, "/colors/*").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.DELETE, "/colors/*").hasRole("ADMIN")
 				.anyRequest().authenticated())
 			.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 			.httpBasic(Customizer.withDefaults());
