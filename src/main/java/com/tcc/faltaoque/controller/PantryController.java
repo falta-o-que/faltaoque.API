@@ -2,6 +2,7 @@ package com.tcc.faltaoque.controller;
 
 import com.tcc.faltaoque.dto.request.PantryRequest;
 import com.tcc.faltaoque.dto.response.PantryResponse;
+import com.tcc.faltaoque.dto.response.GroceryListResponse;
 import com.tcc.faltaoque.service.PantryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,6 +43,17 @@ public class PantryController {
     public ResponseEntity<PantryResponse> findPantryById(@PathVariable String id, Authentication authentication){
         return ResponseEntity
                 .status(HttpStatus.OK).body(pantryService.findPantryById(id, authentication.getName()));
+    }
+
+    @Operation(summary = "Listar todas as listas de compras de uma despensa do usuário autenticado")
+    @GetMapping("/{id}/grocery-lists")
+    public ResponseEntity<List<GroceryListResponse>> listAllGroceryListsByPantry(
+    Authentication authentication, @PathVariable String id) {
+        return ResponseEntity.
+            status(HttpStatus.OK)
+            .body(pantryService.listAllGroceryListsByPantry(
+                authentication.getName(),
+                id));
     }
 
     @Operation(summary = "Atualizar uma despensa do usuário autenticado")

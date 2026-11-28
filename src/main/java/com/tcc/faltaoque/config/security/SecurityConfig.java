@@ -32,11 +32,23 @@ public class SecurityConfig {
 				.requestMatchers("/swagger-ui.html", "/swagger-ui/**","/v3/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/colors").permitAll()
 				.requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
-				.requestMatchers(HttpMethod.GET, "/users/pantries").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.GET,
+					"/users/pantries",
+					"/pantries/{id}/grocery-lists").hasAnyRole("USER", "ADMIN")
 				.requestMatchers(HttpMethod.PUT, "/users").hasAnyRole("USER", "ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/users").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/purchases/**", "/products/**").hasAnyRole("USER", "ADMIN")
-				.requestMatchers(HttpMethod.GET, "/users", "/users/{id}", "/pantries", "/pantries-invites", "/locations", "/products", "/purchases").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET,
+					"/users", "/users/{id}",
+					"/pantries",
+					"/pantries-invites",
+					"/locations",
+					"/products",
+					"/purchases",
+					"/grocery-lists", "/grocery-lists/{id}").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.POST, "/grocery-lists").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.PUT, "/grocery-lists/{id}").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.DELETE, "/grocery-lists/{id}").hasAnyRole("USER", "ADMIN")
 				.requestMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.PUT, "/categories/*").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/categories/*").hasRole("ADMIN")
