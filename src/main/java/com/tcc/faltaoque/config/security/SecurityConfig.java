@@ -30,9 +30,14 @@ public class SecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/swagger-ui.html", "/swagger-ui/**","/v3/api-docs/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/colors").permitAll()
 				.requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
+				.requestMatchers(HttpMethod.GET, "/users/pantries").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.PUT, "/users").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.DELETE, "/users").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/purchases/**", "/products/**").hasAnyRole("USER", "ADMIN")
 				.requestMatchers(HttpMethod.GET,
-					"/users",
+					"/users", "/users/{id}",
 					"/pantries",
 					"/pantries-invites",
 					"/locations",
@@ -48,7 +53,6 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.POST, "/colors").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.PUT, "/colors/*").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/colors/*").hasRole("ADMIN")
-				.requestMatchers("/purchases/**", "/products/**").hasAnyRole("USER", "ADMIN")
 				.anyRequest().authenticated())
 			.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 			.httpBasic(Customizer.withDefaults());

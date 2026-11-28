@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,28 +48,28 @@ public class UserController {
 			.body(userService.findUserById(id));
 	}
 
-	@Operation(summary = "Listar todas as despensas de um único usuário")
-	@GetMapping("{id}/pantries")
+	@Operation(summary = "Listar todas as despensas do usuário autenticado")
+	@GetMapping("/pantries")
 	public ResponseEntity<List<PantryResponse>> listAllPantriesByUser(
-	@PathVariable String id) {
+	Authentication authentication) {
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(userService.listAllPantriesByUser(id));
+			.body(userService.listAllPantriesByUser(authentication.getName()));
 	}
 
-	@Operation(summary = "Atualizar as informações de um usuário")
-	@PutMapping("/{id}")
-	public ResponseEntity<UserResponse> updateUser(@PathVariable String id,
+	@Operation(summary = "Atualizar as informações do usuário autenticado")
+	@PutMapping
+	public ResponseEntity<UserResponse> updateUser(Authentication authentication,
 	@RequestBody @Valid UserRequest userRequest) {
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(userService.updateUser(id, userRequest));
+			.body(userService.updateUser(authentication.getName(), userRequest));
 	}
 
-	@Operation(summary = "Deletar um usuário")
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteUser(@PathVariable String id) {
-		userService.deleteUser(id);
+	@Operation(summary = "Deletar o usuário autenticado")
+	@DeleteMapping
+	public ResponseEntity<Void> deleteUser(Authentication authentication) {
+		userService.deleteUser(authentication.getName());
 		return ResponseEntity
 			.status(HttpStatus.NO_CONTENT)
 			.build();
