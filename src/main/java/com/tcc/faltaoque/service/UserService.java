@@ -13,6 +13,7 @@ import com.tcc.faltaoque.exception.UserNotFoundException;
 import com.tcc.faltaoque.exception.ColorNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +23,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final ColorRepository colorRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	public List<UserResponse> listAllUsers() {
 		return userRepository.findAll()
@@ -55,7 +57,7 @@ public class UserService {
 
 		user.setName(userRequest.name());
 		user.setEmail(userRequest.email());
-		user.setPassword(userRequest.password());
+		user.setPassword(passwordEncoder.encode(userRequest.password()));
 		user.setAvatar(color);
 
 		userRepository.save(user);
