@@ -40,6 +40,6 @@ public class PurchaseMapper {
     public static void updateEntity (Purchase purchase, PurchaseRequest request){
         purchase.setTitle(request.title());
         purchase.setPurchaseDate(request.purchaseDate());
-        purchase.setQrCodeId(String.valueOf(request.purchaseDate()));
+        purchase.setQrCodeId(request.qrCodeId());
     }
 }
