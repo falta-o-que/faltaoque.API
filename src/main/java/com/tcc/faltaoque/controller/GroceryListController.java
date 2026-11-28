@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,30 +48,37 @@ public class GroceryListController {
 			.body(groceryListService.findGroceryListById(id));
 	}
 
-	@Operation(summary = "Criar uma nova lista de compras")
+	@Operation(summary = "Criar uma nova lista de compras para o usuário autenticado")
 	@PostMapping
-	public ResponseEntity<GroceryListResponse> createGroceryList(
+	public ResponseEntity<GroceryListResponse> createGroceryList(Authentication authentication,
 	@RequestBody @Valid GroceryListRequest groceryListRequest) {
 		return ResponseEntity
 			.status(HttpStatus.CREATED)
-			.body(groceryListService.createGroceryList(groceryListRequest));
+			.body(groceryListService.createGroceryList(
+				authentication.getName(),
+				groceryListRequest));
 	}
 
-	@Operation(summary = "Atualizar uma lista de compras")
+	@Operation(summary = "Atualizar uma lista de compras do usuário autenticado")
 	@PutMapping("/{id}")
-	public ResponseEntity<GroceryListResponse> updateGroceryList(
+	public ResponseEntity<GroceryListResponse> updateGroceryList(Authentication authentication,
 	@PathVariable String id, @RequestBody @Valid GroceryListRequest groceryListRequest) {
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(groceryListService.updateGroceryList(id, groceryListRequest));
+			.body(groceryListService.updateGroceryList(
+				authentication.getName(),
+				id,
+				groceryListRequest));
 	}
 
-	@Operation(summary = "Deletar uma lista de compras")
+	@Operation(summary = "Deletar uma lista de compras do usuário autenticado")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteGroceryList(@PathVariable String id) {
-		groceryListService.deleteGroceryList(id);
+	public ResponseEntity<Void> deleteGroceryList(Authentication authentication,
+	@PathVariable String id) {
+		groceryListService.deleteGroceryList(authentication.getName(), id);
 		return ResponseEntity
 			.status(HttpStatus.NO_CONTENT)
 			.build();
 	}
+
 }

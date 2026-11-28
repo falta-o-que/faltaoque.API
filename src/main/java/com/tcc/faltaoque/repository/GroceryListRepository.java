@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface GroceryListRepository extends JpaRepository<GroceryList, String> {
 
+	boolean existsByIdAndPantryId(String id, String pantryId);
+
 }
