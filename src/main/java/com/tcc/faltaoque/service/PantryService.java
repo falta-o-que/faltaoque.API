@@ -2,13 +2,18 @@ package com.tcc.faltaoque.service;
 
 import com.tcc.faltaoque.dto.request.PantryRequest;
 import com.tcc.faltaoque.dto.response.PantryResponse;
+import com.tcc.faltaoque.dto.response.GroceryListResponse;
 import com.tcc.faltaoque.entity.Pantry;
 import com.tcc.faltaoque.entity.Color;
 import com.tcc.faltaoque.entity.User;
 import com.tcc.faltaoque.mapper.PantryMapper;
+import com.tcc.faltaoque.mapper.GroceryListMapper;
 import com.tcc.faltaoque.repository.PantryRepository;
 import com.tcc.faltaoque.repository.ColorRepository;
+import com.tcc.faltaoque.repository.GroceryListRepository;
 import com.tcc.faltaoque.exception.ColorNotFoundException;
+import com.tcc.faltaoque.exception.PantryNotFoundException;
+import com.tcc.faltaoque.exception.InvalidCredentialsException;
 import com.tcc.faltaoque.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +30,7 @@ public class PantryService {
 
     private final PantryRepository pantryRepository;
     private final ColorRepository colorRepository;
+    private final GroceryListRepository groceryListRepository;
     private final UserRepository userRepository;
 
 
@@ -56,6 +62,28 @@ public class PantryService {
     public PantryResponse findPantryById(String id, String userEmail){
         Pantry pantry = findPantryForUserOrThrow(id, userEmail);
         return PantryMapper.toResponse(pantry, pantry.getColor(), pantry.getShareInvite());
+    }
+
+    // Listar todas as listas de compras por despensa
+    public List<GroceryListResponse> listAllGroceryListsByPantry(String userEmail, String id) {
+        User user = userRepository.findByEmail(userEmail)
+            .orElseThrow(() -> new InvalidCredentialsException());
+
+        Pantry pantry = pantryRepository.findById(id)
+            .orElseThrow(() -> new PantryNotFoundException(id));
+
+        if(!pantryRepository.existsByIdAndUsers_Email(pantry.getId(), user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                "Você não participa desta despensa!");
+        }
+
+        return groceryListRepository.findByPantryId(id)
+            .stream()
+            .map(groceryList -> GroceryListMapper.toResponse(
+                groceryList,
+                groceryList.getLocation(),
+                groceryList.getPantry()))
+            .collect(Collectors.toList());
     }
 
     //Editar despensa
