@@ -11,6 +11,7 @@ import com.tcc.faltaoque.dto.response.UserResponse;
 import com.tcc.faltaoque.dto.response.PantryResponse;
 import com.tcc.faltaoque.exception.UserNotFoundException;
 import com.tcc.faltaoque.exception.ColorNotFoundException;
+import com.tcc.faltaoque.exception.InvalidCredentialsException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,9 +39,9 @@ public class UserService {
 		return UserMapper.toResponse(user, user.getAvatar());
 	}
 
-	public List<PantryResponse> listAllPantriesByUser(String id) {
-		User user = userRepository.findById(id)
-			.orElseThrow(() -> new UserNotFoundException(id));
+	public List<PantryResponse> listAllPantriesByUser(String userEmail) {
+		User user = userRepository.findByEmail(userEmail)
+			.orElseThrow(() -> new InvalidCredentialsException());
 
 		return user.getPantries()
 			.stream()
@@ -49,9 +50,9 @@ public class UserService {
 			.collect(Collectors.toList());
 	}
 
-	public UserResponse updateUser(String id, UserRequest userRequest) {
-		User user = userRepository.findById(id)
-			.orElseThrow(() -> new UserNotFoundException(id));
+	public UserResponse updateUser(String userEmail, UserRequest userRequest) {
+		User user = userRepository.findByEmail(userEmail)
+			.orElseThrow(() -> new InvalidCredentialsException());
 		Color color = colorRepository.findById(userRequest.avatar())
 			.orElseThrow(() -> new ColorNotFoundException(userRequest.avatar()));
 
@@ -64,9 +65,9 @@ public class UserService {
 		return UserMapper.toResponse(user, user.getAvatar());
 	}
 
-	public void deleteUser(String id) {
-		User user = userRepository.findById(id)
-			.orElseThrow(() -> new UserNotFoundException(id));
+	public void deleteUser(String userEmail) {
+		User user = userRepository.findByEmail(userEmail)
+			.orElseThrow(() -> new InvalidCredentialsException());
 
 		user.setIsActive(false);
 		userRepository.save(user);
